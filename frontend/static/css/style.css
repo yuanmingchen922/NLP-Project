@@ -1,0 +1,1808 @@
+/* Yelp Official Brand Design System */
+
+/* Import Google Fonts - Yelp Official Typography */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@600;700&display=swap');
+
+:root {
+    /* Yelp Official Brand Colors */
+    --yelp-red: #D32323;
+    --yelp-red-dark: #C41200;
+    --yelp-red-light: #E8505B;
+    --yelp-red-hover: #AF1B1B;
+
+    /* Yelp Accent Colors - Red Only */
+    --yelp-link: #666666;  /* Links use dark gray, not teal */
+    --yelp-link-hover: #D71616;  /* Hover shows red */
+    --yelp-border: #F0F0F0;  /* Very light gray borders */
+    --yelp-bg-secondary: #F7F7F7;  /* Light gray secondary background */
+
+    /* Neutral Colors (Yelp Style) */
+    --white: #ffffff;
+    --gray-100: #FAFAFA;
+    --gray-200: #F5F5F5;
+    --gray-300: #E6E6E6;
+    --gray-400: #CCCCCC;
+    --gray-500: #999999;
+    --gray-600: #666666;
+    --gray-700: #333333;
+    --gray-800: #262626;
+    --gray-900: #1A1A1A;
+
+    /* Rating Colors */
+    --star-color: #FF8C00;
+    --rating-5: #00C853;
+    --rating-4: #7CB342;
+    --rating-3: #FBC02D;
+    --rating-2: #FB8C00;
+    --rating-1: #E53935;
+
+    /* Typography - Yelp Official Font Stack */
+    --font-primary: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-headings: 'Poppins', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+    /* Spacing - Yelp Official Scale */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-2xl: 48px;
+    --spacing-3xl: 80px;
+
+    /* Border Radius - Yelp Actual Design */
+    --radius-sm: 4px;  /* Yelp standard radius */
+    --radius-md: 4px;  /* Yelp uses 4px consistently */
+    --radius-card: 4px;  /* Cards also use 4px */
+    --radius-button: 4px;  /* Buttons use 4px, NOT pill shape */
+    --radius-lg: 8px;
+
+    /* Shadows - Yelp Official (Subtle at 8% opacity) */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+    --shadow-xl: 0 12px 50px rgba(0, 0, 0, 0.08);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--white);  /* Yelp Official: White primary background */
+    color: var(--gray-900);
+    line-height: 1.6;  /* Yelp uses 1.6 for better readability */
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Container - Better centering and width control */
+.container {
+    max-width: 1320px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-headings);
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: var(--spacing-md);
+}
+
+h1 { font-size: 32px; }
+h2 { font-size: 28px; }
+h3 { font-size: 24px; }
+h4 { font-size: 20px; }
+h5 { font-size: 18px; }
+h6 { font-size: 16px; }
+
+/* Navigation Bar - Yelp Minimalist (White with subtle accents) */
+.navbar {
+    background-color: var(--white) !important;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+    padding: 0 !important;
+    min-height: 64px;
+    border-bottom: 1px solid var(--gray-300);
+}
+
+.navbar .container {
+    padding: 0 var(--spacing-lg);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--yelp-red) !important;
+    padding: var(--spacing-md) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.navbar-brand:hover {
+    opacity: 0.8;
+}
+
+.navbar-brand img {
+    height: 32px;
+    width: auto;
+}
+
+.nav-link {
+    color: var(--gray-700) !important;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    padding: 22px var(--spacing-md) !important;
+    border-bottom: 3px solid transparent;
+}
+
+.nav-link:hover {
+    color: var(--yelp-red) !important;
+    background-color: var(--gray-100);
+    border-bottom-color: var(--yelp-red);
+}
+
+.nav-link.active {
+    color: var(--yelp-red) !important;
+    background-color: var(--gray-100);
+    border-bottom-color: var(--yelp-red);
+}
+
+/* Hero/Jumbotron - Yelp Style */
+.jumbotron {
+    background: linear-gradient(135deg, var(--yelp-red) 0%, var(--yelp-red-dark) 100%);
+    color: white;
+    border-radius: 8px;
+}
+
+/* Cards - Yelp Actual Design */
+.card {
+    border: 1px solid #F0F0F0;  /* Very light gray border */
+    border-radius: var(--radius-card);  /* 4px */
+    box-shadow: none;  /* Yelp uses minimal shadows */
+    transition: all 0.2s ease;
+    background-color: var(--white);
+    overflow: hidden;
+    margin-bottom: var(--spacing-lg);
+}
+
+.card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+    background-color: var(--white);
+    font-weight: 700;
+    font-size: 18px;
+    border-bottom: 1px solid #F0F0F0;
+    padding: var(--spacing-md);  /* Yelp: 16px padding */
+    color: var(--gray-900);
+}
+
+.card-header.bg-yelp-red {
+    background-color: var(--yelp-red);
+    color: white;
+    border-bottom: none;
+}
+
+.card-body {
+    padding: var(--spacing-md);  /* Yelp: 16px padding */
+}
+
+.card-footer {
+    background-color: #F7F7F7;  /* Yelp secondary background */
+    padding: var(--spacing-md);
+    border-top: 1px solid #F0F0F0;
+}
+
+/* Buttons - Yelp Actual Design (4px radius, NOT pill) */
+.btn {
+    font-weight: 700;
+    font-size: 16px;
+    border-radius: var(--radius-button);  /* Yelp uses 4px */
+    padding: 12px 24px;
+    min-height: 44px;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-transform: none;
+    letter-spacing: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2;
+}
+
+.btn-lg {
+    font-size: 16px;
+    padding: 14px 28px;
+    min-height: 48px;
+}
+
+.btn-sm {
+    font-size: 14px;
+    padding: 8px 16px;
+    min-height: 36px;
+}
+
+.btn-primary {
+    background-color: #D71616;  /* Yelp red - ONLY color for primary actions */
+    color: white;
+    border-color: #D71616;
+}
+
+.btn-primary:hover {
+    background-color: #F40D15;  /* Brighter red on hover */
+    border-color: #F40D15;
+    color: white;
+    box-shadow: 0 2px 8px rgba(215, 22, 22, 0.3);
+}
+
+.btn-secondary {
+    background-color: var(--white);
+    border: 1px solid #C8C9CA;  /* Yelp gray border */
+    color: var(--gray-700);
+}
+
+.btn-secondary:hover {
+    background-color: var(--white);
+    border-color: var(--gray-600);
+    color: var(--gray-900);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.btn-success {
+    background-color: var(--rating-5);
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #00A844;
+}
+
+.btn-danger {
+    background-color: var(--rating-1);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #C62828;
+}
+
+.btn-outline-primary,
+.btn-outline-success,
+.btn-outline-info,
+.btn-outline-warning,
+.btn-outline-secondary {
+    background-color: var(--white);
+    border: 2px solid var(--gray-400);
+    color: var(--gray-700);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-success:hover,
+.btn-outline-info:hover,
+.btn-outline-warning:hover,
+.btn-outline-secondary:hover {
+    background-color: var(--gray-200);
+    border-color: var(--yelp-red);
+    color: var(--yelp-red);
+    transform: translateY(-1px);
+}
+
+/* Star Rating Colors */
+.star-rating {
+    color: var(--orange);
+}
+
+/* Stats Cards - Yelp Style */
+.card.bg-primary {
+    background-color: var(--yelp-red) !important;
+    border: none;
+}
+
+.card.bg-success {
+    background-color: var(--success-color) !important;
+    border: none;
+}
+
+.card.bg-info {
+    background-color: var(--blue) !important;
+    border: none;
+}
+
+.card.bg-warning {
+    background-color: var(--orange) !important;
+    border: none;
+    color: white !important;
+}
+
+/* Tables */
+.table {
+    background-color: white;
+}
+
+.table thead {
+    background-color: var(--yelp-red);
+    color: white;
+}
+
+/* List Groups */
+.list-group-item {
+    border-left: 3px solid transparent;
+    transition: all 0.3s;
+    background-color: white;
+}
+
+.list-group-item:hover {
+    border-left-color: var(--yelp-red);
+    background-color: var(--bg-gray);
+}
+
+.list-group-item-action:hover {
+    background-color: var(--bg-gray);
+    border-left-color: var(--yelp-red);
+}
+
+/* Input Groups */
+.input-group {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    border-radius: 4px;
+}
+
+.input-group input,
+.form-control {
+    border: 1px solid var(--light-gray);
+    border-radius: 4px;
+}
+
+.form-control:focus {
+    border-color: var(--yelp-red);
+    box-shadow: 0 0 0 0.2rem rgba(211, 35, 35, 0.15);
+}
+
+/* Badges */
+.badge {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.badge.bg-success {
+    background-color: var(--success-color) !important;
+}
+
+.badge.bg-danger {
+    background-color: var(--yelp-red) !important;
+}
+
+.badge.bg-warning {
+    background-color: var(--warning-color) !important;
+    color: var(--dark-gray) !important;
+}
+
+/* Loading Indicator */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+    color: var(--yelp-red);
+}
+
+/* Footer */
+footer {
+    margin-top: 4rem;
+    background-color: var(--dark-gray);
+}
+
+/* Chart Containers */
+canvas {
+    max-height: 400px;
+}
+
+/* Sentiment Labels */
+.sentiment-positive {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.sentiment-neutral {
+    background-color: var(--warning-color);
+    color: var(--dark-gray);
+}
+
+.sentiment-negative {
+    background-color: var(--yelp-red);
+    color: white;
+}
+
+/* Display Numbers */
+.display-4,
+.display-6 {
+    font-weight: 700;
+    color: inherit;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-gray);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--medium-gray);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--dark-gray);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card,
+.jumbotron {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .jumbotron h1 {
+        font-size: 2rem;
+    }
+
+    .display-4 {
+        font-size: 2.5rem;
+    }
+
+    .card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Utility Classes */
+.text-yelp-red {
+    color: var(--yelp-red);
+}
+
+.text-orange {
+    color: var(--orange);
+}
+
+.bg-yelp-red {
+    background-color: var(--yelp-red);
+}
+
+.border-yelp-red {
+    border-color: var(--yelp-red);
+}
+
+/* Analyze Page - Uniform Button Sizing for Advanced NLP Features */
+.btn-outline-primary,
+.btn-outline-success,
+.btn-outline-info,
+.btn-outline-warning,
+.btn-outline-secondary {
+    min-height: 48px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 0 16px;
+    white-space: nowrap;
+    text-align: center;
+    line-height: 1.2;
+    border-width: 2px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-success:hover,
+.btn-outline-info:hover,
+.btn-outline-warning:hover,
+.btn-outline-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Stars */
+.stars {
+    color: var(--orange);
+    font-size: 1.2em;
+}
+
+/* Star Ratings - Yelp Style */
+.star-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.star {
+    color: var(--star-color);
+    font-size: 18px;
+}
+
+.star.empty {
+    color: var(--gray-400);
+}
+
+.rating-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.rating-badge.rating-5 { background-color: var(--rating-5); color: white; }
+.rating-badge.rating-4 { background-color: var(--rating-4); color: white; }
+.rating-badge.rating-3 { background-color: var(--rating-3); color: var(--gray-900); }
+.rating-badge.rating-2 { background-color: var(--rating-2); color: white; }
+.rating-badge.rating-1 { background-color: var(--rating-1); color: white; }
+
+/* Badges - Yelp Style */
+.badge {
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge.bg-success { background-color: var(--rating-5) !important; }
+.badge.bg-danger { background-color: var(--rating-1) !important; }
+.badge.bg-warning { background-color: var(--rating-3) !important; color: var(--gray-900) !important; }
+.badge.bg-primary { background-color: var(--yelp-red) !important; }
+.badge.bg-info { background-color: var(--yelp-blue) !important; }
+
+/* Row Layout Fix */
+.row {
+    margin-left: -12px;
+    margin-right: -12px;
+}
+
+.row > [class*="col-"] {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+/* Stats Cards - Yelp Actual Design (White, red accents, 4px radius) */
+.stats-card {
+    background: var(--white);
+    color: var(--gray-900);
+    padding: var(--spacing-xl);  /* 32px - moderate padding */
+    border-radius: var(--radius-card);  /* 4px */
+    box-shadow: none;
+    transition: all 0.2s ease;
+    min-height: 160px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #F0F0F0;
+}
+
+.stats-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-color: var(--yelp-red);
+}
+
+.stats-card h2 {
+    color: var(--yelp-red);  /* Red accent for numbers */
+    font-size: 48px;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1;
+}
+
+.stats-card p {
+    color: var(--gray-600);
+    font-size: 14px;
+    margin: var(--spacing-sm) 0 0 0;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Input Fields - Yelp Official Style */
+.form-control {
+    border: 1px solid var(--gray-400);
+    border-radius: var(--radius-md);  /* 8px for inputs */
+    padding: 12px 16px;
+    font-size: 16px;
+    font-family: var(--font-primary);
+    transition: all 0.2s ease;
+    background-color: var(--white);
+}
+
+.form-control:focus {
+    border-color: var(--yelp-red);
+    box-shadow: 0 0 0 3px rgba(211, 35, 35, 0.1);
+    outline: none;
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: var(--spacing-sm);
+    font-size: 14px;
+}
+
+/* Alert - Yelp Style */
+.alert {
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    border: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.alert-success {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+.alert-danger {
+    background-color: #FFEBEE;
+    color: #C62828;
+}
+
+.alert-warning {
+    background-color: #FFF3E0;
+    color: #E65100;
+}
+
+.alert-info {
+    background-color: #E3F2FD;
+    color: #1565C0;
+}
+
+/* Progress Bar */
+.progress {
+    height: 24px;
+    border-radius: var(--radius-full);
+    background-color: var(--gray-300);
+    overflow: hidden;
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, var(--yelp-red) 0%, var(--yelp-red-light) 100%);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 12px;
+    transition: width 0.6s ease;
+}
+
+/* List Groups - Yelp Style */
+.list-group-item {
+    border: 1px solid var(--gray-300);
+    padding: var(--spacing-md) var(--spacing-lg);
+    transition: all 0.2s ease;
+}
+
+.list-group-item:hover {
+    background-color: var(--gray-200);
+    border-left: 4px solid var(--yelp-red);
+}
+
+/* Spinner */
+.spinner-border {
+    width: 48px;
+    height: 48px;
+    border-width: 4px;
+    border-color: var(--yelp-red);
+    border-right-color: transparent;
+}
+
+/* Hero Section - Yelp Actual Design */
+.hero {
+    background: var(--white);
+    color: var(--gray-900);
+    padding: 60px 40px;
+    margin-bottom: var(--spacing-xl);
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: var(--radius-card);  /* 4px */
+    box-shadow: none;
+    width: 100%;
+    border: 1px solid #F0F0F0;
+}
+
+.hero h1 {
+    color: var(--gray-900);
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+    text-align: center;
+}
+
+.hero p {
+    font-size: 20px;
+    color: var(--gray-600);
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 900px;
+}
+
+.hero .display-4 {
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.hero .lead {
+    font-size: 1.5rem;
+    color: var(--gray-600);
+}
+
+.hero .btn {
+    margin: 8px;
+}
+
+.hero hr {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    border-color: var(--gray-300);
+}
+
+/* Chart Container */
+.chart-container {
+    position: relative;
+    height: 400px;
+    padding: var(--spacing-lg);
+}
+
+canvas {
+    max-height: 100%;
+}
+
+/* Feature Section */
+.feature-section {
+    padding: var(--spacing-xl) 0;
+}
+
+.feature-card {
+    text-align: center;
+    padding: var(--spacing-lg);  /* Yelp: 24px padding */
+    border-radius: var(--radius-card);  /* 4px */
+    border: 1px solid #F0F0F0;
+    transition: all 0.2s ease;
+    background: white;
+    min-height: 280px;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    box-shadow: none;
+}
+
+.feature-card:hover {
+    border-color: var(--yelp-red);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.feature-card h5 {
+    color: var(--gray-900);
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.feature-card p {
+    color: var(--gray-600);
+    line-height: 1.6;
+    font-size: 14px;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.feature-icon {
+    width: 56px;
+    height: 56px;
+    background: #FEF0F0;  /* Very light red background */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    color: var(--yelp-red);
+    font-size: 28px;
+    flex-shrink: 0;
+}
+
+.feature-icon svg {
+    width: 32px;
+    height: 32px;
+    display: block;
+}
+
+/* Table - Yelp Style */
+.table {
+    background-color: white;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.table thead {
+    background-color: var(--yelp-red);
+    color: white;
+}
+
+.table thead th {
+    font-weight: 700;
+    padding: var(--spacing-lg);
+    border: none;
+}
+
+.table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background-color: var(--gray-200);
+}
+
+.table tbody td {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-bottom: 1px solid var(--gray-300);
+}
+
+/* Dashboard Specific Styles */
+.page-header {
+    padding: var(--spacing-xl) 0;
+    border-bottom: 3px solid var(--yelp-red);
+    margin-bottom: var(--spacing-xl);
+}
+
+.page-header h1 {
+    color: var(--gray-900);
+    margin-bottom: var(--spacing-sm);
+}
+
+.page-header p {
+    color: var(--gray-600);
+    font-size: 18px;
+}
+
+/* Modern Stats Cards - Yelp Actual Design */
+.stats-card-modern {
+    border-radius: var(--radius-card);  /* 4px */
+    padding: var(--spacing-lg);  /* 24px */
+    background: var(--white);
+    color: var(--gray-900);
+    box-shadow: none;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    border: 1px solid #F0F0F0;
+    position: relative;
+    overflow: hidden;
+    min-height: 120px;
+    width: 100%;
+}
+
+.stats-card-modern:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-color: var(--yelp-red);
+}
+
+.stats-icon {
+    width: 64px;
+    height: 64px;
+    background: #FEF0F0;  /* Very light red */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stats-icon svg {
+    width: 32px;
+    height: 32px;
+    display: block;
+    color: var(--yelp-red);
+}
+
+.stats-content {
+    flex: 1;
+}
+
+.stats-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: var(--spacing-xs);
+    color: var(--gray-600);
+}
+
+.stats-value {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1;
+    color: var(--yelp-red);
+}
+
+/* Gradient Backgrounds - Minimalist (use sparingly) */
+.bg-gradient-red {
+    background: var(--white);
+    border-left: 4px solid var(--yelp-red);
+}
+
+.bg-gradient-blue {
+    background: var(--white);
+    border-left: 4px solid var(--yelp-blue);
+}
+
+.bg-gradient-green {
+    background: var(--white);
+    border-left: 4px solid var(--rating-5);
+}
+
+.bg-gradient-orange {
+    background: var(--white);
+    border-left: 4px solid var(--yelp-orange);
+}
+
+/* Chart Cards - Yelp Actual Design */
+.chart-card {
+    background: white;
+    border-radius: var(--radius-card);  /* 4px */
+    box-shadow: none;
+    transition: all 0.2s ease;
+    border: 1px solid #F0F0F0;
+}
+
+.chart-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.chart-card .card-header {
+    background: var(--white);
+    color: var(--gray-900);
+    border-radius: var(--radius-card) var(--radius-card) 0 0;
+    padding: var(--spacing-md);  /* 16px */
+    border-bottom: 1px solid #F0F0F0;
+}
+
+.chart-card .card-header h5 {
+    color: var(--gray-900);
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.chart-card .card-body {
+    padding: var(--spacing-md);  /* 16px */
+    background: white;
+}
+
+/* Search Card - Yelp Actual Design */
+.search-card {
+    background: white;
+    border-radius: var(--radius-card);  /* 4px */
+    box-shadow: none;
+    border: 1px solid #F0F0F0;
+    transition: all 0.2s ease;
+}
+
+.search-card:hover {
+    border-color: var(--yelp-red);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.search-card .card-header {
+    background: var(--white);
+    border-bottom: 1px solid #F0F0F0;
+    padding: var(--spacing-md);
+}
+
+/* Review Results */
+.review-item {
+    background: white;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    transition: all 0.2s ease;
+}
+
+.review-item:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--yelp-red);
+    transform: translateX(4px);
+}
+
+.review-item h6 {
+    color: var(--yelp-red);
+    font-weight: 700;
+    margin-bottom: var(--spacing-sm);
+}
+
+.review-item .stars {
+    color: var(--star-color);
+}
+
+.review-item p {
+    color: var(--gray-700);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-sm);
+}
+
+.review-item small {
+    color: var(--gray-500);
+}
+
+/* Responsive Grid Gap */
+.g-4 {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 1.5rem;
+}
+
+.g-4 > * {
+    margin-top: var(--bs-gutter-y);
+}
+
+/* Ensure columns don't overflow */
+.col-md-4,
+.col-md-6,
+.col-md-12,
+.col-xl-3,
+.col-xl-6 {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+}
+
+/* Loading State */
+.loading-skeleton {
+    background: linear-gradient(90deg, var(--gray-200) 25%, var(--gray-100) 50%, var(--gray-200) 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s ease-in-out infinite;
+    border-radius: var(--radius-md);
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    color: var(--gray-500);
+}
+
+.empty-state svg {
+    width: 80px;
+    height: 80px;
+    color: var(--gray-400);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Dashboard Responsive */
+@media (max-width: 1200px) {
+    .stats-value {
+        font-size: 30px;
+    }
+
+    .stats-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .stats-icon svg {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+
+    .stats-card-modern {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .stats-value {
+        font-size: 32px;
+    }
+
+    .page-header h1 {
+        font-size: 28px;
+    }
+
+    .stats-card h2 {
+        font-size: 48px;
+    }
+
+    .stats-card {
+        min-height: 160px;
+    }
+
+    .feature-card {
+        min-height: 260px;
+    }
+
+    .feature-icon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .feature-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .hero {
+        padding: 40px 24px;
+    }
+
+    .hero h1 {
+        font-size: 32px !important;
+    }
+
+    /* Stack columns on mobile */
+    .col-md-4,
+    .col-md-6 {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+/* Medium screens */
+@media (min-width: 769px) and (max-width: 991px) {
+    .col-md-4 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    .stats-card h2 {
+        font-size: 48px;
+    }
+}
+
+/* Large screens */
+@media (min-width: 992px) {
+    .col-md-4 {
+        flex: 0 0 33.333333%;
+        max-width: 33.333333%;
+    }
+
+    .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+/* ========================================
+   MODERN UI COMPONENTS (Uiverse-inspired)
+   ======================================== */
+
+/* Animated Button with Ripple Effect */
+.btn-modern {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: none;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.btn-modern::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-modern:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-modern:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(211, 35, 35, 0.3);
+}
+
+/* Glassmorphic Card */
+.glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    padding: var(--spacing-xl);
+    transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+    background: rgba(255, 255, 255, 0.85);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Modern Loader - Yelp Style */
+.modern-loader {
+    width: 60px;
+    height: 60px;
+    border: 4px solid var(--gray-300);
+    border-top-color: var(--yelp-red);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Pulse Loader */
+.pulse-loader {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--yelp-red);
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+}
+
+/* Dot Wave Loader */
+.dot-wave {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+}
+
+.dot-wave span {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--yelp-red);
+    animation: wave 1.4s ease-in-out infinite;
+}
+
+.dot-wave span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.dot-wave span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes wave {
+    0%, 60%, 100% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-15px);
+    }
+}
+
+/* Floating Animation */
+.float-animation {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Gradient Border Card */
+.gradient-border-card {
+    position: relative;
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.gradient-border-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    padding: 3px;
+    background: linear-gradient(135deg, var(--yelp-red), var(--yelp-orange), var(--yelp-blue));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+}
+
+/* 3D Card Hover Effect */
+.card-3d {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+}
+
+.card-3d:hover {
+    transform: perspective(1000px) rotateY(5deg) rotateX(5deg) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Neon Glow Button */
+.btn-neon {
+    background: var(--yelp-red);
+    color: white;
+    padding: 12px 32px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(211, 35, 35, 0.3);
+}
+
+.btn-neon:hover {
+    box-shadow: 0 0 40px rgba(211, 35, 35, 0.6),
+                0 0 60px rgba(211, 35, 35, 0.4),
+                0 0 80px rgba(211, 35, 35, 0.2);
+    transform: translateY(-2px);
+}
+
+.btn-neon::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    bottom: -50%;
+    left: -50%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.3), rgba(255,255,255,0));
+    transform: rotateZ(60deg) translate(-5em, 7.5em);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    to {
+        transform: rotateZ(60deg) translate(1em, -10em);
+    }
+}
+
+/* Modern Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--gray-400);
+    transition: 0.4s;
+    border-radius: 30px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+input:checked + .toggle-slider {
+    background-color: var(--yelp-red);
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(30px);
+}
+
+/* Modern Checkbox */
+.checkbox-modern {
+    display: inline-block;
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    font-size: 16px;
+    user-select: none;
+}
+
+.checkbox-modern input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 24px;
+    width: 24px;
+    background-color: white;
+    border: 2px solid var(--gray-400);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.checkbox-modern:hover input ~ .checkmark {
+    border-color: var(--yelp-red);
+}
+
+.checkbox-modern input:checked ~ .checkmark {
+    background-color: var(--yelp-red);
+    border-color: var(--yelp-red);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-modern input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-modern .checkmark:after {
+    left: 7px;
+    top: 3px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Tooltip Modern */
+.tooltip-modern {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-modern .tooltip-text {
+    visibility: hidden;
+    background-color: var(--gray-900);
+    color: white;
+    text-align: center;
+    border-radius: var(--radius-md);
+    padding: 8px 16px;
+    position: absolute;
+    z-index: 1000;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.tooltip-modern .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--gray-900) transparent transparent transparent;
+}
+
+.tooltip-modern:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Shimmer Effect */
+.shimmer {
+    background: linear-gradient(90deg, var(--gray-200) 25%, var(--gray-100) 50%, var(--gray-200) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Badge with Pulse Animation */
+.badge-pulse {
+    position: relative;
+    animation: badgePulse 2s infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(211, 35, 35, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(211, 35, 35, 0);
+    }
+}
+
+/* Modern Input with Floating Label */
+.input-group-modern {
+    position: relative;
+    margin-bottom: var(--spacing-lg);
+}
+
+.input-group-modern input {
+    width: 100%;
+    padding: 16px 12px 8px 12px;
+    border: 2px solid var(--gray-400);
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.input-group-modern label {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: var(--gray-600);
+    pointer-events: none;
+    transition: all 0.3s ease;
+    background: white;
+    padding: 0 4px;
+}
+
+.input-group-modern input:focus,
+.input-group-modern input:not(:placeholder-shown) {
+    border-color: var(--yelp-red);
+}
+
+.input-group-modern input:focus + label,
+.input-group-modern input:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 12px;
+    color: var(--yelp-red);
+    font-weight: 600;
+}
+
+/* Skeleton Loading Card */
+.skeleton-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-md);
+}
+
+.skeleton-line {
+    height: 16px;
+    background: var(--gray-200);
+    border-radius: 4px;
+    margin-bottom: 12px;
+    animation: skeleton-loading 1.5s infinite ease-in-out;
+}
+
+.skeleton-line:last-child {
+    width: 60%;
+}
+
+@keyframes skeleton-loading {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.4;
+    }
+}
+
+/* Progress Circle */
+.progress-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: conic-gradient(var(--yelp-red) 0% var(--progress, 0%), var(--gray-300) var(--progress, 0%) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.progress-circle::before {
+    content: '';
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: white;
+    position: absolute;
+}
+
+.progress-circle span {
+    position: relative;
+    z-index: 1;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--gray-900);
+}
+
+/* Notification Toast */
+.toast-notification {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: white;
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    transform: translateX(400px);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 10000;
+    border-left: 4px solid var(--yelp-red);
+}
+
+.toast-notification.show {
+    transform: translateX(0);
+}
+
+.toast-notification .toast-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--yelp-red);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Animated Background Gradients */
+.animated-gradient {
+    background: linear-gradient(-45deg, var(--yelp-red), var(--yelp-orange), var(--yelp-blue), var(--yelp-teal));
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Hover Scale Effect */
+.hover-scale {
+    transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+/* Slide In Animation */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-in-up {
+    animation: slideInUp 0.6s ease-out;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}

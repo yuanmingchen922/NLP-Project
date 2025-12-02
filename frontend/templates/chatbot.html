@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Assistant - Yelp Review Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* ChatGPT-Style Layout - Yelp White Theme */
+        .chatgpt-container {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 70px);
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            background: #ffffff;  /* Yelp white primary */
+        }
+
+        /* Messages Area */
+        .chatgpt-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 0;
+            background: #ffffff;
+        }
+
+        .chatgpt-message {
+            padding: 24px 16px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .chatgpt-message.user-message {
+            background: #fafafa;  /* Very light gray for user messages */
+        }
+
+        .chatgpt-message.assistant-message {
+            background: white;
+        }
+
+        .message-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            gap: 24px;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .assistant-avatar {
+            background: #D71616;  /* Yelp red */
+            color: white;
+        }
+
+        .user-avatar {
+            background: #F7F7F7;  /* Light gray */
+            color: #2D2E2F;  /* Dark charcoal */
+        }
+
+        .message-content {
+            flex: 1;
+            line-height: 1.75;
+            font-size: 16px;
+            color: #374151;
+        }
+
+        /* Input Area (Fixed at bottom) */
+        .chatgpt-input-area {
+            background: white;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding: 16px;
+        }
+
+        .chatgpt-input-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .suggestion-chips {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .suggestion-chip {
+            padding: 10px 16px;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 24px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            color: #374151;
+            display: flex;
+            align-items: center;
+        }
+
+        .suggestion-chip:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+
+        /* Input Box */
+        .chatgpt-input-box {
+            position: relative;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            padding: 12px 52px 12px 16px;
+            box-shadow: 0 0 0 1px transparent;
+            transition: all 0.15s ease;
+        }
+
+        .chatgpt-input-box:focus-within {
+            border-color: #D71616;  /* Yelp red */
+            box-shadow: 0 0 0 2px rgba(215, 22, 22, 0.1);
+        }
+
+        .chatgpt-textarea {
+            width: 100%;
+            border: none;
+            outline: none;
+            resize: none;
+            font-size: 16px;
+            line-height: 1.5;
+            max-height: 200px;
+            color: #374151;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        }
+
+        .chatgpt-textarea::placeholder {
+            color: #9ca3af;
+        }
+
+        .chatgpt-send-btn {
+            position: absolute;
+            right: 12px;
+            bottom: 12px;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;  /* Yelp uses 4px */
+            border: none;
+            background: #D71616;  /* Yelp red */
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s ease;
+        }
+
+        .chatgpt-send-btn:hover {
+            background: #F40D15;  /* Brighter red */
+        }
+
+        .chatgpt-send-btn:disabled {
+            background: #e5e7eb;
+            cursor: not-allowed;
+        }
+
+        /* Footer */
+        .chatgpt-footer {
+            text-align: center;
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 12px;
+            padding: 8px;
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chatgpt-message {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        /* Scrollbar */
+        .chatgpt-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chatgpt-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chatgpt-messages::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 4px;
+        }
+
+        .chatgpt-messages::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+
+        /* Loading Animation */
+        .loading-dots {
+            display: inline-block;
+        }
+
+        .loading-dots span {
+            animation: blink 1.4s infinite both;
+            display: inline-block;
+        }
+
+        .loading-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .loading-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes blink {
+            0%, 80%, 100% { opacity: 0.3; }
+            40% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="{{ url_for('static', filename='images/yelp-logo.png') }}" alt="Yelp" height="32">
+                <span>Review Analysis</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analyze">Analyze</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/chatbot">AI Chatbot</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ChatGPT-Style Main Content -->
+    <div class="chatgpt-container">
+        <!-- Chat Messages Area -->
+        <div class="chatgpt-messages" id="chatMessages">
+            <!-- Welcome Message -->
+            <div class="chatgpt-message assistant-message">
+                <div class="message-wrapper">
+                    <div class="avatar assistant-avatar">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                        </svg>
+                    </div>
+                    <div class="message-content">
+                        <h4 style="margin: 0 0 12px 0; font-size: 18px; font-weight: 600;">Welcome to Yelp Insight Assistant</h4>
+                        <p style="margin: 0; line-height: 1.6;">I'm here to help you discover and explore restaurants using real-time Yelp data and our comprehensive database.</p>
+                        <div style="margin-top: 16px;">
+                            <strong>I can help you:</strong>
+                            <ul style="margin: 8px 0 0 0; padding-left: 20px; line-height: 1.8;">
+                                <li>Find restaurants based on cuisine, location, and ratings</li>
+                                <li>Get real-time reviews and current business information</li>
+                                <li>Answer questions about amenities (WiFi, parking, hours)</li>
+                                <li>Compare restaurants and provide recommendations</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Input Area (Fixed at bottom) -->
+        <div class="chatgpt-input-area">
+            <div class="chatgpt-input-wrapper">
+                <!-- Suggestion Chips -->
+                <div class="suggestion-chips" id="suggestionChips">
+                    <button class="suggestion-chip" onclick="sendSuggestion('Recommend highly-rated Italian restaurants in Pittsburgh')">
+                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 6px;">
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                        </svg>
+                        Italian in Pittsburgh
+                    </button>
+                    <button class="suggestion-chip" onclick="sendSuggestion('Tell me about Starbucks - hours, prices, and reviews')">
+                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 6px;">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                        </svg>
+                        Starbucks info
+                    </button>
+                    <button class="suggestion-chip" onclick="sendSuggestion('Find restaurants with outdoor seating and WiFi')">
+                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 6px;">
+                            <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Outdoor + WiFi
+                    </button>
+                </div>
+
+                <!-- Input Box -->
+                <div class="chatgpt-input-box">
+                    <textarea
+                        id="userInput"
+                        class="chatgpt-textarea"
+                        placeholder="Message Yelp Insight Assistant..."
+                        rows="1"
+                        onkeydown="handleKeyDown(event)"></textarea>
+                    <button class="chatgpt-send-btn" onclick="sendMessage()" id="sendButton">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Footer Info -->
+                <div class="chatgpt-footer">
+                    Yelp Insight can make mistakes. Verify important information with live Yelp data.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        let isProcessing = false;
+        // Generate unique session ID for conversation history
+        const sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+
+        // Handle Enter key in textarea (Enter sends, Shift+Enter for new line)
+        function handleKeyDown(event) {
+            if (event.key === 'Enter' && !event.shiftKey && !isProcessing) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        function sendSuggestion(text) {
+            const input = document.getElementById('userInput');
+            input.value = text;
+            autoResizeTextarea();
+            sendMessage();
+        }
+
+        // Auto-resize textarea as user types
+        function autoResizeTextarea() {
+            const textarea = document.getElementById('userInput');
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+        }
+
+        // Listen for input to auto-resize
+        document.addEventListener('DOMContentLoaded', function() {
+            const textarea = document.getElementById('userInput');
+            textarea.addEventListener('input', autoResizeTextarea);
+        });
+
+        async function sendMessage() {
+            if (isProcessing) return;
+
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            isProcessing = true;
+            input.value = '';
+
+            // Add user message
+            addMessage(message, 'user');
+
+            // Show loading
+            addLoadingMessage();
+
+            try {
+                const response = await fetch('/api/chatbot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        session_id: sessionId
+                    })
+                });
+
+                const data = await response.json();
+
+                // Remove loading
+                removeLoadingMessage();
+
+                // Add bot response
+                addBotResponse(data);
+
+            } catch (error) {
+                removeLoadingMessage();
+                addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+                console.error('Error:', error);
+            } finally {
+                isProcessing = false;
+            }
+        }
+
+        function addMessage(text, sender) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+
+            if (sender === 'user') {
+                messageDiv.className = 'chatgpt-message user-message';
+                messageDiv.innerHTML = `
+                    <div class="message-wrapper">
+                        <div class="avatar user-avatar">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                            </svg>
+                        </div>
+                        <div class="message-content">${escapeHtml(text)}</div>
+                    </div>
+                `;
+            } else {
+                messageDiv.className = 'chatgpt-message assistant-message';
+                messageDiv.innerHTML = `
+                    <div class="message-wrapper">
+                        <div class="avatar assistant-avatar">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                            </svg>
+                        </div>
+                        <div class="message-content">${formatMessage(text)}</div>
+                    </div>
+                `;
+            }
+
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // Hide suggestion chips after first message
+            if (sender === 'user') {
+                document.getElementById('suggestionChips').style.display = 'none';
+            }
+        }
+
+        function addLoadingMessage() {
+            const messagesContainer = document.getElementById('chatMessages');
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'chatgpt-message assistant-message';
+            loadingDiv.id = 'loadingMessage';
+            loadingDiv.innerHTML = `
+                <div class="message-wrapper">
+                    <div class="avatar assistant-avatar">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                        </svg>
+                    </div>
+                    <div class="message-content">
+                        <span class="loading-dots"><span>●</span><span>●</span><span>●</span></span>
+                    </div>
+                </div>
+            `;
+            messagesContainer.appendChild(loadingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function removeLoadingMessage() {
+            const loading = document.getElementById('loadingMessage');
+            if (loading) loading.remove();
+        }
+
+        function addBotResponse(data) {
+            const message = data.message || 'No response';
+            addMessage(message, 'bot');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function formatMessage(text) {
+            // Convert markdown to HTML using marked.js if available
+            if (typeof marked !== 'undefined') {
+                try {
+                    // Configure marked for safe rendering
+                    marked.setOptions({
+                        breaks: true,
+                        gfm: true,
+                        sanitize: false
+                    });
+                    return marked.parse(text);
+                } catch (e) {
+                    console.error('Marked.js error:', e);
+                }
+            }
+
+            // Fallback: Simple markdown conversion
+            text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+            text = text.replace(/\n/g, '<br>');
+            return text;
+        }
+
+        // Auto-scroll to bottom on page load
+        window.addEventListener('load', () => {
+            const messagesContainer = document.getElementById('chatMessages');
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        });
+    </script>
+</body>
+</html>

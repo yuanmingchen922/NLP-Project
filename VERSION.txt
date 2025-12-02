@@ -1,0 +1,21 @@
+Version: 1.0.0
+Date: 2025-12-01
+Status: STABLE BASELINE
+Description: Yelp Review Analysis System - Version 1.0
+
+Features:
+- Business search with filters (city, state, category, rating)
+- Review sentiment analysis
+- AI-powered review summarization (OpenAI GPT-4o-mini)
+- Keyword extraction
+- Basic aspect sentiment analysis (5 aspects)
+- Sentiment trend analysis
+- Interactive web interface with Yelp branding
+- Real-time Yelp data integration (SerpAPI)
+
+Data:
+- 100,000 reviews
+- 9,973 businesses (100% with review coverage)
+
+This is the baseline version before implementing three-feature enhancement (v1.1).
+Rollback capability preserved via Git tag v1.0-baseline and tar.gz backup.

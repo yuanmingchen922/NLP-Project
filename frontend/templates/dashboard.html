@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Dashboard - Yelp Review Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="{{ url_for('static', filename='images/yelp-logo.png') }}" alt="Yelp" height="32">
+                <span>Review Analysis</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analyze">Analyze</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/chatbot">AI Chatbot</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4 px-4">
+        <!-- Page Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="page-header">
+                    <h1 class="display-5 fw-bold text-dark mb-2">Analytics Dashboard</h1>
+                    <p class="text-muted fs-5">Real-time insights from Yelp review data</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row mb-4 g-4">
+            <div class="col-xl-3 col-md-6 slide-in-up" style="animation-delay: 0.1s;">
+                <div class="stats-card-modern bg-gradient-red">
+                    <div class="stats-icon">
+                        <svg width="40" height="40" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                        </svg>
+                    </div>
+                    <div class="stats-content">
+                        <h6 class="stats-label">Total Reviews</h6>
+                        <h2 class="stats-value" id="totalReviews">-</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 slide-in-up" style="animation-delay: 0.2s;">
+                <div class="stats-card-modern bg-gradient-blue">
+                    <div class="stats-icon">
+                        <svg width="40" height="40" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"/>
+                        </svg>
+                    </div>
+                    <div class="stats-content">
+                        <h6 class="stats-label">Businesses</h6>
+                        <h2 class="stats-value" id="totalBusinesses">-</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 slide-in-up" style="animation-delay: 0.3s;">
+                <div class="stats-card-modern bg-gradient-green">
+                    <div class="stats-icon">
+                        <svg width="40" height="40" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+                        </svg>
+                    </div>
+                    <div class="stats-content">
+                        <h6 class="stats-label">Active Users</h6>
+                        <h2 class="stats-value" id="totalUsers">-</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 slide-in-up" style="animation-delay: 0.4s;">
+                <div class="stats-card-modern bg-gradient-orange">
+                    <div class="stats-icon">
+                        <svg width="40" height="40" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                        </svg>
+                    </div>
+                    <div class="stats-content">
+                        <h6 class="stats-label">Avg Rating</h6>
+                        <h2 class="stats-value" id="avgRating">-</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="row g-4 mb-4">
+            <div class="col-xl-6">
+                <div class="chart-card">
+                    <div class="card-header">
+                        <h5>Rating Distribution</h5>
+                        <p class="mb-0 small" style="opacity: 0.9;">Review breakdown by star rating</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container" style="position: relative; height:350px;">
+                            <canvas id="ratingDistChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="chart-card">
+                    <div class="card-header">
+                        <h5>Review Trends</h5>
+                        <p class="mb-0 small" style="opacity: 0.9;">Monthly review volume (Last 12 months)</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container" style="position: relative; height:350px;">
+                            <canvas id="reviewTrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review Search -->
+        <div class="row">
+            <div class="col-12">
+                <div class="search-card">
+                    <div class="card-header">
+                        <h5 class="mb-1">Search Reviews</h5>
+                        <p class="text-muted small mb-0">Find reviews by keywords or phrases</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3 align-items-end mb-4">
+                            <div class="col-md-10">
+                                <label for="searchQuery" class="form-label fw-bold">Search Query</label>
+                                <input type="text" class="form-control form-control-lg" id="searchQuery"
+                                    placeholder="e.g., great service, delicious food, slow delivery...">
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary btn-lg w-100" type="button" id="searchReviewsBtn">
+                                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 8px;">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                    </svg>
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+                        <div id="reviewSearchResults"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // Load statistics data
+        fetch('/api/stats/overview')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Received data:', data);
+
+                // Update statistics cards
+                document.getElementById('totalReviews').textContent =
+                    data.total_reviews.toLocaleString();
+                document.getElementById('totalBusinesses').textContent =
+                    data.total_businesses.toLocaleString();
+                document.getElementById('totalUsers').textContent =
+                    data.total_users.toLocaleString();
+                document.getElementById('avgRating').textContent =
+                    data.avg_rating.toFixed(2);
+
+                // Draw rating distribution chart
+                if (data.rating_distribution && Object.keys(data.rating_distribution).length > 0) {
+                    const ctx = document.getElementById('ratingDistChart').getContext('2d');
+                    console.log('Drawing rating distribution chart...');
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: Object.keys(data.rating_distribution).map(k => k + ' Stars'),
+                            datasets: [{
+                                label: 'Number of Reviews',
+                                data: Object.values(data.rating_distribution),
+                                backgroundColor: [
+                                    '#E53935',
+                                    '#FB8C00',
+                                    '#FBC02D',
+                                    '#7CB342',
+                                    '#00C853'
+                                ],
+                                borderColor: [
+                                    '#C62828',
+                                    '#E65100',
+                                    '#F57F17',
+                                    '#558B2F',
+                                    '#00A844'
+                                ],
+                                borderWidth: 2,
+                                borderRadius: 4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        font: {
+                                            size: 12,
+                                            family: "'Helvetica Neue', Arial, sans-serif"
+                                        }
+                                    }
+                                },
+                                x: {
+                                    ticks: {
+                                        font: {
+                                            size: 12,
+                                            weight: 'bold',
+                                            family: "'Helvetica Neue', Arial, sans-serif"
+                                        }
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                title: {
+                                    display: false
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Draw review trend chart
+                if (data.reviews_by_month && Object.keys(data.reviews_by_month).length > 0) {
+                    const ctx = document.getElementById('reviewTrendChart').getContext('2d');
+                    const months = Object.keys(data.reviews_by_month);
+                    const counts = Object.values(data.reviews_by_month);
+                    console.log('Drawing review trend chart with', months.length, 'data points...');
+
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: months.slice(-12),  // Show last 12 months
+                            datasets: [{
+                                label: 'Reviews',
+                                data: counts.slice(-12),
+                                borderColor: '#D32323',
+                                backgroundColor: 'rgba(211, 35, 35, 0.1)',
+                                tension: 0.4,
+                                fill: true,
+                                borderWidth: 3,
+                                pointBackgroundColor: '#D32323',
+                                pointBorderColor: '#fff',
+                                pointBorderWidth: 2,
+                                pointRadius: 5,
+                                pointHoverRadius: 7
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        font: {
+                                            size: 12,
+                                            family: "'Helvetica Neue', Arial, sans-serif"
+                                        }
+                                    }
+                                },
+                                x: {
+                                    ticks: {
+                                        font: {
+                                            size: 11,
+                                            family: "'Helvetica Neue', Arial, sans-serif"
+                                        }
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    labels: {
+                                        font: {
+                                            size: 13,
+                                            weight: 'bold',
+                                            family: "'Helvetica Neue', Arial, sans-serif"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error loading stats:', error);
+                // Show error message to user
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'alert alert-danger';
+                errorMsg.textContent = 'Failed to load dashboard statistics. Please refresh the page.';
+                document.querySelector('.container-fluid').prepend(errorMsg);
+            });
+
+        // Review search
+        document.getElementById('searchReviewsBtn').addEventListener('click', function() {
+            const query = document.getElementById('searchQuery').value.trim();
+            if (!query) {
+                alert('Please enter search keywords');
+                return;
+            }
+
+            fetch(`/api/search/reviews?q=${encodeURIComponent(query)}&limit=10`)
+                .then(response => response.json())
+                .then(data => {
+                    const results = document.getElementById('reviewSearchResults');
+
+                    if (data.reviews && data.reviews.length > 0) {
+                        let html = '<div class="mt-3">';
+                        html += `<p class="text-muted mb-3"><strong>${data.reviews.length}</strong> results found</p>`;
+                        data.reviews.forEach(review => {
+                            const stars = '⭐'.repeat(Math.round(review.rating || 0));
+                            html += `
+                                <div class="review-item">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h6 class="mb-0">${review.business_name || 'Unknown Business'}</h6>
+                                        <span class="stars">${stars}</span>
+                                    </div>
+                                    <p class="mb-2">${review.text.substring(0, 250)}...</p>
+                                    <small class="text-muted">
+                                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                                        </svg>
+                                        ${review.date || 'No date'}
+                                    </small>
+                                </div>
+                            `;
+                        });
+                        html += '</div>';
+                        results.innerHTML = html;
+                    } else {
+                        results.innerHTML = `
+                            <div class="empty-state">
+                                <svg fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                </svg>
+                                <h5>No reviews found</h5>
+                                <p>Try adjusting your search terms</p>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('reviewSearchResults').innerHTML =
+                        '<p class="text-danger mt-3">Search error</p>';
+                });
+        });
+
+        // Support Enter key for search
+        document.getElementById('searchQuery').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('searchReviewsBtn').click();
+            }
+        });
+    </script>
+</body>
+</html>

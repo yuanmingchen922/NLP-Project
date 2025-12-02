@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Analysis - Yelp Review Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="{{ url_for('static', filename='images/yelp-logo.png') }}" alt="Yelp" height="32">
+                <span>Review Analysis</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/analyze">Analyze</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/chatbot">AI Chatbot</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="display-5 fw-bold text-dark mb-2">Real-time Review Analysis</h1>
+            <p class="text-muted fs-5">Analyze review text using advanced NLP techniques and machine learning models</p>
+        </div>
+
+        <!-- Input Section -->
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header bg-yelp-red text-white">
+                        <h5 class="mb-0">Enter Review Text</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="reviewText" class="form-label">Review Content</label>
+                            <textarea class="form-control" id="reviewText" rows="5"
+                                placeholder="Enter English review text... e.g., This restaurant is amazing! The food was delicious and the service was excellent."></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <button class="btn btn-primary btn-modern btn-lg w-100" id="analyzeSentimentBtn">Analyze Sentiment</button>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <button class="btn btn-secondary btn-modern w-100" id="analyzeStatsBtn">Text Statistics</button>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <p class="text-center mb-2 text-muted"><strong>Advanced NLP Features</strong></p>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <button class="btn btn-outline-primary w-100" id="extractEntitiesBtn">Extract Entities</button>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <button class="btn btn-outline-success w-100" id="extractKeywordsBtn">Extract Keywords</button>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <button class="btn btn-outline-info w-100" id="summarizeBtn">Summarize</button>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <button class="btn btn-outline-warning w-100" id="aspectAnalysisBtn">Aspect Analysis</button>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <p class="text-center mb-2 text-muted"><strong>Professional Analysis</strong></p>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <button class="btn btn-outline-secondary w-100" id="qualityScoreBtn">Quality Score</button>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <button class="btn btn-outline-secondary w-100" id="spamDetectionBtn">Spam Detection</button>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <button class="btn btn-outline-secondary w-100" id="credibilityBtn">Credibility Check</button>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-6 mb-2">
+                                <button class="btn btn-danger w-100" id="comprehensiveBtn">Comprehensive Analysis</button>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <button class="btn btn-primary w-100" id="professionalBtn">Professional Report</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sample Texts -->
+                <div class="mt-3">
+                    <small class="text-muted">Sample texts:</small>
+                    <div class="btn-group btn-group-sm mt-2" role="group">
+                        <button type="button" class="btn btn-outline-secondary example-btn"
+                            data-text="This place is amazing! Best food I've ever had. The service was excellent and the atmosphere was perfect!">
+                            Positive
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary example-btn"
+                            data-text="The food was okay. Nothing special but not terrible either. Average experience.">
+                            Neutral
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary example-btn"
+                            data-text="Terrible experience. The food was cold and the service was awful. Never coming back.">
+                            Negative
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="row mt-5" id="resultsSection" style="display: none;">
+            <div class="col-md-8 offset-md-2">
+                <h3>Analysis Results</h3>
+
+                <!-- Sentiment Analysis Results -->
+                <div id="sentimentResult" style="display: none;">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h5 class="mb-0">Sentiment Analysis</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Detected Sentiment:</strong> <span id="sentimentLabel" class="badge"></span></p>
+                                    <p><strong>Confidence:</strong> <span id="sentimentConfidence"></span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <canvas id="sentimentChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Statistics Results -->
+                <div id="statsResult" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Text Statistics</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul class="list-group" id="statsList"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div class="row mt-3" id="loadingIndicator" style="display: none;">
+            <div class="col-md-8 offset-md-2 text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2">Analyzing...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/advanced_nlp.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/professional_features.js') }}"></script>
+    <script>
+        // Sample text buttons
+        document.querySelectorAll('.example-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.getElementById('reviewText').value = this.dataset.text;
+            });
+        });
+
+        // Sentiment analysis
+        document.getElementById('analyzeSentimentBtn').addEventListener('click', function() {
+            const text = document.getElementById('reviewText').value.trim();
+            if (!text) {
+                alert('Please enter review text');
+                return;
+            }
+
+            // Show loading indicator
+            document.getElementById('loadingIndicator').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'none';
+
+            fetch('/api/analyze/sentiment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: text })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loadingIndicator').style.display = 'none';
+                document.getElementById('resultsSection').style.display = 'block';
+                document.getElementById('sentimentResult').style.display = 'block';
+
+                if (data.sentiment) {
+                    // Display sentiment label
+                    const label = document.getElementById('sentimentLabel');
+                    label.textContent = data.sentiment;
+                    label.className = 'badge ' +
+                        (data.sentiment === 'Positive' ? 'bg-success' :
+                         data.sentiment === 'Negative' ? 'bg-danger' : 'bg-warning');
+
+                    // Display confidence
+                    document.getElementById('sentimentConfidence').textContent =
+                        (data.confidence * 100).toFixed(2) + '%';
+
+                    // Draw probability chart
+                    if (data.probabilities) {
+                        const ctx = document.getElementById('sentimentChart');
+                        new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: Object.keys(data.probabilities),
+                                datasets: [{
+                                    label: 'Probability',
+                                    data: Object.values(data.probabilities).map(v => v * 100),
+                                    backgroundColor: [
+                                        'rgba(211, 35, 35, 0.8)',
+                                        'rgba(255, 193, 7, 0.8)',
+                                        'rgba(25, 135, 84, 0.8)'
+                                    ]
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        max: 100,
+                                        ticks: {
+                                            callback: function(value) {
+                                                return value + '%';
+                                            }
+                                        }
+                                    }
+                                },
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    alert(data.message || 'Analysis failed');
+                }
+            })
+            .catch(error => {
+                document.getElementById('loadingIndicator').style.display = 'none';
+                console.error('Error:', error);
+                alert('Analysis error, please try again');
+            });
+        });
+
+        // Text statistics analysis
+        document.getElementById('analyzeStatsBtn').addEventListener('click', function() {
+            const text = document.getElementById('reviewText').value.trim();
+            if (!text) {
+                alert('Please enter review text');
+                return;
+            }
+
+            document.getElementById('loadingIndicator').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'none';
+
+            fetch('/api/analyze/statistics', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: text })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loadingIndicator').style.display = 'none';
+                document.getElementById('resultsSection').style.display = 'block';
+                document.getElementById('statsResult').style.display = 'block';
+
+                // Display statistics
+                const statsList = document.getElementById('statsList');
+                statsList.innerHTML = '';
+                const statsLabels = {
+                    'num_chars': 'Characters',
+                    'num_words': 'Words',
+                    'num_sentences': 'Sentences',
+                    'avg_word_length': 'Avg Word Length',
+                    'num_exclamation': 'Exclamation Marks',
+                    'num_question': 'Question Marks',
+                    'num_uppercase': 'Uppercase Letters',
+                    'num_digits': 'Digits'
+                };
+
+                for (const [key, value] of Object.entries(data)) {
+                    const li = document.createElement('li');
+                    li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                    li.innerHTML = `
+                        ${statsLabels[key] || key}
+                        <span class="badge bg-primary rounded-pill">${typeof value === 'number' ? value.toFixed(2) : value}</span>
+                    `;
+                    statsList.appendChild(li);
+                }
+            })
+            .catch(error => {
+                document.getElementById('loadingIndicator').style.display = 'none';
+                console.error('Error:', error);
+                alert('Analysis error, please try again');
+            });
+        });
+    </script>
+</body>
+</html>

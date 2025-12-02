@@ -1,0 +1,50 @@
+# Web Framework
+flask==3.0.0
+flask-cors==4.0.0
+
+# Data Processing
+pandas==2.1.4
+numpy==1.26.2
+
+# NLP Libraries
+nltk==3.8.1
+spacy==3.7.2
+transformers==4.36.2
+torch>=2.2.0
+gensim==4.3.2
+
+# Machine Learning
+scikit-learn==1.3.2
+scipy==1.11.4
+
+# Visualization
+matplotlib==3.8.2
+seaborn==0.13.0
+plotly==5.18.0
+wordcloud==1.9.3
+
+# Database
+sqlalchemy==2.0.23
+
+# Utilities
+tqdm==4.66.1
+python-dotenv==1.0.0
+requests==2.31.0
+
+# Testing
+pytest==7.4.3
+pytest-cov==4.1.0
+
+# Text Processing
+textblob==0.17.1
+langdetect==1.0.9
+
+# Model Serving
+joblib==1.3.2
+
+# Topic Modeling Visualization
+pyLDAvis==3.4.1
+
+# Jupyter
+jupyter==1.0.0
+ipykernel==6.27.1

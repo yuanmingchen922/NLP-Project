@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern UI Components Showcase</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body style="background: var(--gray-100); padding: 40px 0;">
+    <div class="container">
+        <div class="animated-gradient text-center p-5 rounded mb-5" style="color: white;">
+            <h1 class="display-3">Modern UI Components</h1>
+            <p class="lead">Uiverse-inspired design elements for Yelp Review Analysis</p>
+        </div>
+
+        <!-- Buttons Section -->
+        <section class="mb-5 slide-in-up">
+            <h2 class="mb-4">Modern Buttons</h2>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <button class="btn btn-primary btn-modern w-100">Ripple Effect</button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-neon w-100">Neon Glow</button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary hover-scale w-100">Hover Scale</button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-danger badge-pulse w-100">Pulsing Badge</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loaders Section -->
+        <section class="mb-5 slide-in-up" style="animation-delay: 0.2s;">
+            <h2 class="mb-4">Loading Animations</h2>
+            <div class="row text-center g-4">
+                <div class="col-md-4">
+                    <div class="card p-4">
+                        <h5>Spinner</h5>
+                        <div class="d-flex justify-content-center mt-3">
+                            <div class="modern-loader"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-4">
+                        <h5>Pulse</h5>
+                        <div class="d-flex justify-content-center mt-3">
+                            <div class="pulse-loader"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-4">
+                        <h5>Wave</h5>
+                        <div class="d-flex justify-content-center mt-3">
+                            <div class="dot-wave">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cards Section -->
+        <section class="mb-5 slide-in-up" style="animation-delay: 0.3s;">
+            <h2 class="mb-4">Card Styles</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="glass-card">
+                        <h5>Glassmorphic Card</h5>
+                        <p>Modern glass effect with backdrop blur</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="gradient-border-card">
+                        <h5>Gradient Border</h5>
+                        <p>Animated gradient border effect</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-3d p-4">
+                        <h5>3D Transform</h5>
+                        <p>Hover for 3D perspective effect</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Form Elements -->
+        <section class="mb-5 slide-in-up" style="animation-delay: 0.4s;">
+            <h2 class="mb-4">Form Components</h2>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="input-group-modern">
+                        <input type="text" id="modernInput" placeholder=" ">
+                        <label for="modernInput">Floating Label Input</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="toggle-switch">
+                        <input type="checkbox">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="ms-3">Toggle Switch</span>
+                </div>
+                <div class="col-md-3">
+                    <label class="checkbox-modern">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        Custom Checkbox
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- Progress & Feedback -->
+        <section class="mb-5 slide-in-up" style="animation-delay: 0.5s;">
+            <h2 class="mb-4">Progress & Feedback</h2>
+            <div class="row g-4 text-center">
+                <div class="col-md-4">
+                    <div class="progress-circle" style="--progress: 75%; margin: 0 auto;">
+                        <span>75%</span>
+                    </div>
+                    <p class="mt-3">Progress Circle</p>
+                </div>
+                <div class="col-md-8">
+                    <div class="skeleton-card">
+                        <div class="skeleton-line"></div>
+                        <div class="skeleton-line"></div>
+                        <div class="skeleton-line"></div>
+                        <div class="skeleton-line"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tooltips -->
+        <section class="mb-5 slide-in-up" style="animation-delay: 0.6s;">
+            <h2 class="mb-4">Interactive Elements</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="tooltip-modern">
+                        <button class="btn btn-primary">Hover for Tooltip</button>
+                        <span class="tooltip-text">Modern tooltip with smooth animation</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="shimmer" style="height: 100px; border-radius: 8px;"></div>
+                    <p class="mt-2 text-center">Shimmer Effect</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="float-animation" style="background: var(--yelp-red); color: white; padding: 20px; border-radius: 8px; text-align: center;">
+                        Floating Animation
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Toast Notification Demo -->
+        <section class="mb-5">
+            <h2 class="mb-4">Notification Toast</h2>
+            <button class="btn btn-primary" onclick="showToast()">Show Toast Notification</button>
+        </section>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toast">
+        <div class="toast-icon">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+            </svg>
+        </div>
+        <div>
+            <h6 style="margin: 0; font-weight: 700;">Success!</h6>
+            <p style="margin: 0; color: var(--gray-600); font-size: 14px;">UI components loaded successfully</p>
+        </div>
+    </div>
+
+    <script>
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Show toast on page load
+        window.addEventListener('load', function() {
+            setTimeout(showToast, 1000);
+        });
+    </script>
+</body>
+</html>
