@@ -238,6 +238,89 @@
                                             </div>
                                         ` : ''}
 
+                                        <!-- Enhanced Features (Version 1.1) -->
+                                        <div class="enhanced-features mt-3" style="border-top: 1px solid #E8E8E8; padding-top: 16px;">
+                                            <!-- Feature Buttons -->
+                                            <div class="d-flex gap-2 flex-wrap mb-2">
+                                                <button class="btn btn-sm btn-outline-danger" onclick="loadAndShowAspects('${business.business_id}')">
+                                                    📊 Detailed Ratings
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-info" onclick="loadAndShowTrends('${business.business_id}')">
+                                                    📈 Rating Trends
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-success" onclick="loadAndShowDishes('${business.business_id}')">
+                                                    🍽️ Popular Dishes
+                                                </button>
+                                            </div>
+
+                                            <!-- Aspects Section (Initially Hidden) -->
+                                            <div id="aspects-${business.business_id}" class="enhanced-section" style="display: none;">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <h6 class="mb-0" style="color: var(--yelp-red);">📊 Detailed Aspect Ratings</h6>
+                                                    <button class="btn btn-sm btn-link text-muted" onclick="toggleAspects('${business.business_id}')" style="text-decoration: none;">
+                                                        Hide
+                                                    </button>
+                                                </div>
+                                                <div id="aspects-loading-${business.business_id}" class="text-center py-3">
+                                                    <div class="spinner-border spinner-border-sm text-danger" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                    <p class="mb-0 mt-2 text-muted small">Analyzing aspects...</p>
+                                                </div>
+                                                <div id="aspects-content-${business.business_id}" style="display: none;">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <canvas id="radar-chart-${business.business_id}" style="max-height: 250px;"></canvas>
+                                                        </div>
+                                                        <div class="col-md-6" id="aspect-scores-${business.business_id}">
+                                                            <!-- Aspect scores will be inserted here -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Trends Section (Initially Hidden) -->
+                                            <div id="trends-${business.business_id}" class="enhanced-section" style="display: none;">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <h6 class="mb-0" style="color: #17A2B8;">📈 Rating Improvement Trends</h6>
+                                                    <button class="btn btn-sm btn-link text-muted" onclick="toggleTrends('${business.business_id}')" style="text-decoration: none;">
+                                                        Hide
+                                                    </button>
+                                                </div>
+                                                <div id="trends-loading-${business.business_id}" class="text-center py-3">
+                                                    <div class="spinner-border spinner-border-sm text-info" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                    <p class="mb-0 mt-2 text-muted small">Analyzing trends...</p>
+                                                </div>
+                                                <div id="trends-content-${business.business_id}" style="display: none;">
+                                                    <div id="improvement-badge-${business.business_id}" class="mb-3">
+                                                        <!-- Improvement badge will be inserted here -->
+                                                    </div>
+                                                    <canvas id="trend-chart-${business.business_id}" style="max-height: 200px;"></canvas>
+                                                </div>
+                                            </div>
+
+                                            <!-- Dishes Section (Initially Hidden) -->
+                                            <div id="dishes-${business.business_id}" class="enhanced-section" style="display: none;">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <h6 class="mb-0" style="color: #28A745;">🍽️ Popular Dishes & Menu Items</h6>
+                                                    <button class="btn btn-sm btn-link text-muted" onclick="toggleDishes('${business.business_id}')" style="text-decoration: none;">
+                                                        Hide
+                                                    </button>
+                                                </div>
+                                                <div id="dishes-loading-${business.business_id}" class="text-center py-3">
+                                                    <div class="spinner-border spinner-border-sm text-success" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                    <p class="mb-0 mt-2 text-muted small">Extracting popular dishes...</p>
+                                                </div>
+                                                <div id="dishes-content-${business.business_id}" style="display: none;">
+                                                    <!-- Dishes list will be inserted here -->
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <!-- Action Links -->
                                         <div class="d-flex gap-2 flex-wrap">
                                             ${business.google_maps_url ? `

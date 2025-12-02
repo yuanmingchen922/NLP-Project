@@ -135,6 +135,171 @@ class SentimentTrendAnalyzer:
 
         return shifts
 
+    def analyze_improvement_trends(self, business_id: str = None,
+                                   period: str = 'quarter') -> Dict[str, Any]:
+        """
+        Analyze improvement trends with 0-100 improvement score (Version 1.1)
+
+        Args:
+            business_id: Business ID to analyze (None for all)
+            period: Time period ('month', 'quarter', 'year')
+
+        Returns:
+            Dict with trend analysis and improvement metrics
+        """
+        import numpy as np
+        from scipy import stats
+
+        if self.reviews_data is None:
+            return {}
+
+        df = self.reviews_data.copy()
+
+        if business_id:
+            df = df[df['business_id'] == business_id]
+
+        if len(df) < 5:  # Need minimum data for trend analysis
+            return {
+                'error': 'Insufficient data for trend analysis',
+                'min_required': 5,
+                'available': len(df)
+            }
+
+        # Parse dates and sort
+        df['date'] = pd.to_datetime(df['date'], errors='coerce')
+        df = df.dropna(subset=['date'])
+        df = df.sort_values('date')
+
+        # Determine time period grouping
+        period_map = {
+            'month': 'M',
+            'quarter': 'Q',
+            'year': 'Y'
+        }
+        freq = period_map.get(period, 'Q')
+
+        # Group by period
+        df['period'] = df['date'].dt.to_period(freq)
+        grouped = df.groupby('period').agg({
+            'stars': ['mean', 'count']
+        }).reset_index()
+
+        grouped.columns = ['period', 'avg_rating', 'review_count']
+        grouped = grouped[grouped['review_count'] >= 2]  # Filter periods with few reviews
+
+        if len(grouped) < 3:
+            return {
+                'error': 'Insufficient periods for trend analysis',
+                'min_required': 3,
+                'available': len(grouped)
+            }
+
+        # Convert period to numeric for regression
+        grouped['period_num'] = range(len(grouped))
+
+        # Linear regression for trend
+        slope, intercept, r_value, p_value, std_err = stats.linregress(
+            grouped['period_num'], grouped['avg_rating']
+        )
+
+        # Calculate improvement score (0-100)
+        improvement_score = self._calculate_improvement_score(
+            slope, grouped['avg_rating'].values, r_value
+        )
+
+        # Classify trend direction
+        if slope > 0.1 and improvement_score > 70:
+            trend_direction = 'Strongly Improving'
+            trend_class = 'success'
+        elif slope > 0.05:
+            trend_direction = 'Improving'
+            trend_class = 'success'
+        elif abs(slope) <= 0.05:
+            trend_direction = 'Stable'
+            trend_class = 'info'
+        elif slope < -0.1:
+            trend_direction = 'Declining'
+            trend_class = 'danger'
+        else:
+            trend_direction = 'Slightly Declining'
+            trend_class = 'warning'
+
+        # Prepare chart data
+        chart_data = []
+        for _, row in grouped.iterrows():
+            chart_data.append({
+                'period': str(row['period']),
+                'average_rating': round(row['avg_rating'], 2),
+                'review_count': int(row['review_count'])
+            })
+
+        # Calculate predicted next period rating
+        next_period_num = len(grouped)
+        predicted_rating = slope * next_period_num + intercept
+        predicted_rating = max(1.0, min(5.0, predicted_rating))  # Clamp to 1-5
+
+        return {
+            'improvement_score': round(improvement_score, 1),
+            'trend_direction': trend_direction,
+            'trend_class': trend_class,
+            'slope': round(slope, 4),
+            'correlation': round(r_value, 3),
+            'p_value': round(p_value, 4),
+            'statistical_significance': 'significant' if p_value < 0.05 else 'not_significant',
+            'current_rating': round(grouped['avg_rating'].iloc[-1], 2),
+            'first_period_rating': round(grouped['avg_rating'].iloc[0], 2),
+            'predicted_next_rating': round(predicted_rating, 2),
+            'total_change': round(grouped['avg_rating'].iloc[-1] - grouped['avg_rating'].iloc[0], 2),
+            'period_count': len(grouped),
+            'total_reviews': int(grouped['review_count'].sum()),
+            'chart_data': chart_data
+        }
+
+    def _calculate_improvement_score(self, slope: float, ratings: np.ndarray,
+                                     correlation: float) -> float:
+        """
+        Calculate improvement score (0-100) based on multiple components
+
+        Args:
+            slope: Linear regression slope
+            ratings: Array of period average ratings
+            correlation: Correlation coefficient (R)
+
+        Returns:
+            Improvement score (0-100)
+        """
+        import numpy as np
+
+        # Component 1: Trend direction (40 points max)
+        # Positive slope = points, negative = penalty
+        trend_score = min(40, max(-40, slope * 100))
+
+        # Component 2: Performance improvement (40 points max)
+        # Based on how much rating improved from start to end
+        if len(ratings) >= 2:
+            start_rating = ratings[0]
+            end_rating = ratings[-1]
+            change = end_rating - start_rating
+
+            # Scale: 0 change = 20 points, +1 star = 40 points, -1 star = 0 points
+            performance_score = 20 + (change * 20)
+            performance_score = min(40, max(0, performance_score))
+        else:
+            performance_score = 20
+
+        # Component 3: Consistency (20 points max)
+        # Higher correlation = more consistent trend
+        consistency_score = abs(correlation) * 20
+
+        # Total score
+        total_score = trend_score + performance_score + consistency_score
+
+        # Normalize to 0-100
+        # Theoretical range: -40 to 100, shift and scale to 0-100
+        normalized_score = ((total_score + 40) / 140) * 100
+
+        return max(0, min(100, normalized_score))
+
 
 class BusinessInsightsAnalyzer:
     """

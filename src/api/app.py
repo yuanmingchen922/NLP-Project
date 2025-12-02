@@ -1001,6 +1001,256 @@ def get_aspect_importance(business_id):
         return jsonify({'error': str(e)}), 500
 
 
+# ============================================================================
+# VERSION 1.1: CACHE SYSTEM AND ENHANCED ENDPOINTS
+# ============================================================================
+
+# In-memory cache with TTL
+_cache_store = {}  # {cache_key: (data, timestamp)}
+CACHE_TTL_SECONDS = 3600  # 1 hour
+MAX_CACHE_ENTRIES = 1000  # Auto-evict if exceeded
+
+
+def get_from_cache(key: str):
+    """Get item from cache if not expired"""
+    import time
+
+    if key not in _cache_store:
+        return None
+
+    data, timestamp = _cache_store[key]
+    age = time.time() - timestamp
+
+    if age > CACHE_TTL_SECONDS:
+        # Expired, remove from cache
+        del _cache_store[key]
+        return None
+
+    return data
+
+
+def set_in_cache(key: str, data):
+    """Set item in cache with current timestamp"""
+    import time
+
+    # Auto-evict oldest entries if cache is too large
+    if len(_cache_store) >= MAX_CACHE_ENTRIES:
+        # Remove oldest 10% of entries
+        sorted_keys = sorted(_cache_store.keys(),
+                           key=lambda k: _cache_store[k][1])
+        for k in sorted_keys[:MAX_CACHE_ENTRIES // 10]:
+            del _cache_store[k]
+
+    _cache_store[key] = (data, time.time())
+
+
+def clear_cache():
+    """Clear all cache entries"""
+    global _cache_store
+    _cache_store = {}
+
+
+@app.route('/api/business/<business_id>/aspects-enhanced', methods=['GET'])
+def get_enhanced_aspects(business_id):
+    """
+    Get enhanced aspect-based sentiment analysis (Version 1.1)
+    Returns 8 aspects with detailed sentiment analysis
+    """
+    try:
+        # Check cache first
+        cache_key = f"aspects_enhanced_{business_id}"
+        cached_data = get_from_cache(cache_key)
+
+        if cached_data is not None:
+            logger.info(f"Cache hit for aspects-enhanced: {business_id}")
+            return jsonify(cached_data)
+
+        logger.info(f"Cache miss for aspects-enhanced: {business_id}, computing...")
+
+        # Import enhanced analyzer
+        from src.models.advanced_nlp import analyze_business_aspects
+
+        if reviews_df.empty:
+            return jsonify({'error': 'No review data available'}), 404
+
+        # Analyze aspects
+        aspects = analyze_business_aspects(business_id, reviews_df)
+
+        if not aspects:
+            return jsonify({'error': 'No reviews found for this business'}), 404
+
+        # Prepare radar chart data
+        radar_data = {
+            'labels': [],
+            'scores': [],
+            'ratings': []
+        }
+
+        for aspect_key, aspect_data in aspects.items():
+            radar_data['labels'].append(aspect_data['label'])
+            # Convert -1 to +1 score to 0-5 scale for radar chart
+            normalized_score = (aspect_data['average_score'] + 1) / 2 * 5
+            radar_data['scores'].append(round(normalized_score, 2))
+            radar_data['ratings'].append(aspect_data['average_rating'])
+
+        result = {
+            'business_id': business_id,
+            'aspects': aspects,
+            'radar_chart_data': radar_data,
+            'timestamp': pd.Timestamp.now().isoformat()
+        }
+
+        # Cache the result
+        set_in_cache(cache_key, result)
+
+        return jsonify(result)
+
+    except Exception as e:
+        logger.error(f"Error in enhanced aspects analysis: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/business/<business_id>/dishes', methods=['GET'])
+def get_business_dishes(business_id):
+    """
+    Get popular dishes/menu items for a business (Version 1.1)
+    Uses rule-based + frequency + AI fallback extraction
+    """
+    try:
+        top_n = request.args.get('top_n', default=10, type=int)
+        top_n = min(top_n, 20)  # Limit to 20 max
+
+        # Check cache first
+        cache_key = f"dishes_{business_id}_{top_n}"
+        cached_data = get_from_cache(cache_key)
+
+        if cached_data is not None:
+            logger.info(f"Cache hit for dishes: {business_id}")
+            return jsonify(cached_data)
+
+        logger.info(f"Cache miss for dishes: {business_id}, extracting...")
+
+        # Import dish extractor
+        from src.models.advanced_nlp import extract_business_dishes
+
+        if reviews_df.empty:
+            return jsonify({'error': 'No review data available'}), 404
+
+        # Extract dishes
+        dishes = extract_business_dishes(business_id, reviews_df, top_n=top_n)
+
+        result = {
+            'business_id': business_id,
+            'dishes': dishes,
+            'count': len(dishes),
+            'timestamp': pd.Timestamp.now().isoformat()
+        }
+
+        # Cache the result
+        set_in_cache(cache_key, result)
+
+        return jsonify(result)
+
+    except Exception as e:
+        logger.error(f"Error extracting dishes: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/business/<business_id>/improvement-trends', methods=['GET'])
+def get_improvement_trends(business_id):
+    """
+    Get improvement trend analysis with 0-100 score (Version 1.1)
+    Shows how business is improving over time
+    """
+    try:
+        period = request.args.get('period', default='quarter', type=str)
+
+        # Validate period
+        if period not in ['month', 'quarter', 'year']:
+            return jsonify({'error': 'Invalid period. Use: month, quarter, or year'}), 400
+
+        # Check cache first
+        cache_key = f"trends_{business_id}_{period}"
+        cached_data = get_from_cache(cache_key)
+
+        if cached_data is not None:
+            logger.info(f"Cache hit for improvement trends: {business_id}")
+            return jsonify(cached_data)
+
+        logger.info(f"Cache miss for improvement trends: {business_id}, analyzing...")
+
+        if not business_analytics['trend_analyzer']:
+            return jsonify({'error': 'Trend analyzer not available'}), 503
+
+        # Analyze trends
+        trends = business_analytics['trend_analyzer'].analyze_improvement_trends(
+            business_id=business_id,
+            period=period
+        )
+
+        if 'error' in trends:
+            return jsonify(trends), 400
+
+        result = {
+            'business_id': business_id,
+            'period': period,
+            'trends': trends,
+            'timestamp': pd.Timestamp.now().isoformat()
+        }
+
+        # Cache the result
+        set_in_cache(cache_key, result)
+
+        return jsonify(result)
+
+    except Exception as e:
+        logger.error(f"Error analyzing improvement trends: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/cache/stats', methods=['GET'])
+def get_cache_stats():
+    """Get cache statistics for debugging"""
+    import time
+
+    total_entries = len(_cache_store)
+    expired_count = 0
+    valid_count = 0
+
+    for key, (data, timestamp) in _cache_store.items():
+        age = time.time() - timestamp
+        if age > CACHE_TTL_SECONDS:
+            expired_count += 1
+        else:
+            valid_count += 1
+
+    return jsonify({
+        'total_entries': total_entries,
+        'valid_entries': valid_count,
+        'expired_entries': expired_count,
+        'max_entries': MAX_CACHE_ENTRIES,
+        'ttl_seconds': CACHE_TTL_SECONDS
+    })
+
+
+@app.route('/api/cache/clear', methods=['POST'])
+def clear_cache_endpoint():
+    """Clear all cache entries"""
+    try:
+        entries_cleared = len(_cache_store)
+        clear_cache()
+
+        return jsonify({
+            'success': True,
+            'entries_cleared': entries_cleared,
+            'message': 'Cache cleared successfully'
+        })
+
+    except Exception as e:
+        logger.error(f"Error clearing cache: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/business/executive-summary', methods=['GET'])
 def get_executive_summary():
     """Get executive summary with comprehensive business insights"""

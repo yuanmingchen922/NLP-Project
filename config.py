@@ -78,6 +78,11 @@ SERPAPI_ENABLED = bool(SERPAPI_KEY)  # 如果有API key则启用实时抓取
 LOG_DIR = BASE_DIR / 'logs'
 LOG_LEVEL = 'INFO'
 
+# Version constants (Version 1.1)
+APP_VERSION = '1.1.0'
+APP_VERSION_NAME = 'Enhanced Features Release'
+APP_VERSION_DATE = '2025-12-01'
+
 # 创建必要的目录
 for directory in [DATA_DIR, RAW_DATA_DIR, PROCESSED_DATA_DIR, MODEL_DIR, LOG_DIR]:
     directory.mkdir(parents=True, exist_ok=True)

@@ -1806,3 +1806,157 @@ input:checked + .toggle-slider:before {
 .fade-in {
     animation: fadeIn 0.5s ease-in;
 }
+
+/* ============================================================================
+   VERSION 1.1: ENHANCED FEATURES STYLING
+   ============================================================================ */
+
+/* Enhanced Features Container */
+.enhanced-features {
+    margin-top: 1rem;
+    border-top: 1px solid #E8E8E8;
+    padding-top: 1rem;
+}
+
+/* Enhanced Section (Aspects, Trends, Dishes) */
+.enhanced-section {
+    background: #FAFAFA;
+    border: 1px solid #E8E8E8;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 12px;
+    animation: slideInDown 0.3s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    to {
+        opacity: 1;
+        max-height: 1000px;
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+}
+
+/* Loading Spinner Container */
+.enhanced-section .spinner-border {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* Aspect Score Progress Bars */
+.enhanced-section .progress {
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.enhanced-section .progress-bar {
+    transition: width 0.6s ease;
+}
+
+/* Improvement Badge Card */
+.enhanced-section .card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.enhanced-section .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Dishes List */
+.enhanced-section .list-group-item {
+    background: transparent;
+    border-left: none;
+    border-right: none;
+    border-top: 1px solid #E8E8E8;
+    transition: background-color 0.2s ease;
+}
+
+.enhanced-section .list-group-item:first-child {
+    border-top: none;
+}
+
+.enhanced-section .list-group-item:hover {
+    background-color: rgba(220, 53, 69, 0.02);
+}
+
+/* Sentiment Badges */
+.enhanced-section .badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    font-weight: 500;
+}
+
+/* Chart Containers */
+.enhanced-section canvas {
+    max-width: 100%;
+    height: auto !important;
+}
+
+/* Feature Buttons */
+.enhanced-features .btn-outline-danger:hover {
+    background-color: var(--yelp-red);
+    border-color: var(--yelp-red);
+    color: white;
+}
+
+.enhanced-features .btn-outline-info:hover {
+    background-color: #17A2B8;
+    border-color: #17A2B8;
+    color: white;
+}
+
+.enhanced-features .btn-outline-success:hover {
+    background-color: #28A745;
+    border-color: #28A745;
+    color: white;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .enhanced-section {
+        padding: 12px;
+    }
+
+    .enhanced-section .row {
+        flex-direction: column;
+    }
+
+    .enhanced-section .col-md-6 {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .enhanced-section canvas {
+        max-height: 200px !important;
+    }
+
+    .enhanced-features .btn-sm {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
+}
+
+/* Smooth Fade-In for Content */
+.enhanced-section [id*="content"] {
+    animation: contentFadeIn 0.4s ease-in;
+}
+
+@keyframes contentFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+}
