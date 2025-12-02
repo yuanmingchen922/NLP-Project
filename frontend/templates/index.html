@@ -241,63 +241,31 @@
                                         <!-- Enhanced Features (Version 1.1) -->
                                         <div class="enhanced-features mt-3" style="border-top: 1px solid #E8E8E8; padding-top: 16px;">
                                             <!-- Feature Buttons - Single Row -->
-                                            <div class="d-flex gap-2 mb-2" style="flex-wrap: nowrap;">
-                                                <button class="btn btn-sm btn-outline-danger" onclick="loadAndShowAspects('${business.business_id}')" style="white-space: nowrap;">
-                                                    Detailed Ratings
+                                            <div class="d-flex gap-3 mb-2" style="flex-wrap: nowrap; justify-content: center;">
+                                                <button class="btn btn-sm btn-outline-primary" onclick="loadAndShowReviews('${business.business_id}')" style="white-space: nowrap; min-width: 140px;">
+                                                    View Reviews
                                                 </button>
-                                                <button class="btn btn-sm btn-outline-info" onclick="loadAndShowTrends('${business.business_id}')" style="white-space: nowrap;">
-                                                    Rating Trends
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-success" onclick="loadAndShowDishes('${business.business_id}')" style="white-space: nowrap;">
+                                                <button class="btn btn-sm btn-outline-success" onclick="loadAndShowDishes('${business.business_id}')" style="white-space: nowrap; min-width: 140px;">
                                                     Popular Dishes
                                                 </button>
                                             </div>
 
-                                            <!-- Aspects Section (Initially Hidden) -->
-                                            <div id="aspects-${business.business_id}" class="enhanced-section" style="display: none; border: 1px solid #E8E8E8;">
+                                            <!-- Reviews Section (Initially Hidden) -->
+                                            <div id="reviews-${business.business_id}" class="enhanced-section" style="display: none; border: 1px solid #E8E8E8;">
                                                 <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <h6 class="mb-0" style="color: var(--yelp-red);">Detailed Aspect Ratings</h6>
-                                                    <button class="btn btn-sm btn-link text-muted" onclick="toggleAspects('${business.business_id}')" style="text-decoration: none;">
+                                                    <h6 class="mb-0" style="color: #0d6efd;">Customer Reviews</h6>
+                                                    <button class="btn btn-sm btn-link text-muted" onclick="toggleReviews('${business.business_id}')" style="text-decoration: none;">
                                                         Hide
                                                     </button>
                                                 </div>
-                                                <div id="aspects-loading-${business.business_id}" class="text-center py-3">
-                                                    <div class="spinner-border spinner-border-sm text-danger" role="status">
+                                                <div id="reviews-loading-${business.business_id}" class="text-center py-3">
+                                                    <div class="spinner-border spinner-border-sm text-primary" role="status">
                                                         <span class="visually-hidden">Loading...</span>
                                                     </div>
-                                                    <p class="mb-0 mt-2 text-muted small">Analyzing aspects...</p>
+                                                    <p class="mb-0 mt-2 text-muted small">Loading reviews...</p>
                                                 </div>
-                                                <div id="aspects-content-${business.business_id}" style="display: none;">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <canvas id="radar-chart-${business.business_id}" style="max-height: 250px;"></canvas>
-                                                        </div>
-                                                        <div class="col-md-6" id="aspect-scores-${business.business_id}">
-                                                            <!-- Aspect scores will be inserted here -->
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Trends Section (Initially Hidden) -->
-                                            <div id="trends-${business.business_id}" class="enhanced-section" style="display: none; border: 1px solid #E8E8E8;">
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <h6 class="mb-0" style="color: #17A2B8;">Rating Improvement Trends</h6>
-                                                    <button class="btn btn-sm btn-link text-muted" onclick="toggleTrends('${business.business_id}')" style="text-decoration: none;">
-                                                        Hide
-                                                    </button>
-                                                </div>
-                                                <div id="trends-loading-${business.business_id}" class="text-center py-3">
-                                                    <div class="spinner-border spinner-border-sm text-info" role="status">
-                                                        <span class="visually-hidden">Loading...</span>
-                                                    </div>
-                                                    <p class="mb-0 mt-2 text-muted small">Analyzing trends...</p>
-                                                </div>
-                                                <div id="trends-content-${business.business_id}" style="display: none;">
-                                                    <div id="improvement-badge-${business.business_id}" class="mb-3">
-                                                        <!-- Improvement badge will be inserted here -->
-                                                    </div>
-                                                    <canvas id="trend-chart-${business.business_id}" style="max-height: 200px;"></canvas>
+                                                <div id="reviews-content-${business.business_id}" style="display: none;">
+                                                    <!-- Reviews will be inserted here -->
                                                 </div>
                                             </div>
 
@@ -322,9 +290,9 @@
                                         </div>
 
                                         <!-- Action Links -->
-                                        <div class="d-flex gap-2 flex-wrap">
+                                        <div class="d-flex gap-3 flex-wrap" style="justify-content: center;">
                                             ${business.google_maps_url ? `
-                                                <a href="${business.google_maps_url}" target="_blank" class="btn btn-sm btn-outline-primary" style="text-decoration: none;">
+                                                <a href="${business.google_maps_url}" target="_blank" class="btn btn-sm btn-outline-primary" style="text-decoration: none; white-space: nowrap; min-width: 140px;">
                                                     <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 4px;">
                                                         <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
                                                     </svg>
@@ -332,19 +300,19 @@
                                                 </a>
                                             ` : ''}
                                             ${business.google_search_url ? `
-                                                <a href="${business.google_search_url}" target="_blank" class="btn btn-sm btn-outline-success" style="text-decoration: none;">
+                                                <a href="${business.google_search_url}" target="_blank" class="btn btn-sm btn-outline-success" style="text-decoration: none; white-space: nowrap; min-width: 140px;">
                                                     <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 4px;">
                                                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                                                     </svg>
                                                     Find Website
                                                 </a>
                                             ` : ''}
-                                            <span class="badge bg-secondary" style="display: flex; align-items: center; padding: 6px 12px;">
+                                            <button class="btn btn-sm btn-outline-danger" disabled style="white-space: nowrap; min-width: 140px; opacity: 1;">
                                                 <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 4px;">
                                                     <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
                                                 </svg>
                                                 ${business.review_count || 0} reviews
-                                            </span>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

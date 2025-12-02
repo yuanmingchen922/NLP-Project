@@ -158,10 +158,10 @@ class SentimentTrendAnalyzer:
         if business_id:
             df = df[df['business_id'] == business_id]
 
-        if len(df) < 5:  # Need minimum data for trend analysis
+        if len(df) < 3:  # Reduced: Need minimum 3 reviews for trend analysis
             return {
                 'error': 'Insufficient data for trend analysis',
-                'min_required': 5,
+                'min_required': 3,
                 'available': len(df)
             }
 
@@ -185,12 +185,12 @@ class SentimentTrendAnalyzer:
         }).reset_index()
 
         grouped.columns = ['period', 'avg_rating', 'review_count']
-        grouped = grouped[grouped['review_count'] >= 2]  # Filter periods with few reviews
+        grouped = grouped[grouped['review_count'] >= 1]  # Reduced: Allow periods with 1+ reviews
 
-        if len(grouped) < 3:
+        if len(grouped) < 2:  # Reduced: Need minimum 2 periods for trend
             return {
                 'error': 'Insufficient periods for trend analysis',
-                'min_required': 3,
+                'min_required': 2,
                 'available': len(grouped)
             }
 

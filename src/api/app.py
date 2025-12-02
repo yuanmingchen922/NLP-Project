@@ -458,23 +458,61 @@ def get_business(business_id):
 
 @app.route('/api/business/<business_id>/reviews', methods=['GET'])
 def get_business_reviews(business_id):
-    """Get business reviews"""
-    if reviews_df.empty:
-        return jsonify({'error': 'No review data available'}), 404
+    """Get business reviews with caching and sorting"""
+    try:
+        limit = request.args.get('limit', default=10, type=int)
+        limit = min(limit, 50)  # Maximum 50 reviews
 
-    business_reviews = reviews_df[reviews_df['business_id'] == business_id]
+        # Check cache first
+        cache_key = f"reviews_{business_id}_{limit}"
+        cached_data = get_from_cache(cache_key)
 
-    if business_reviews.empty:
-        return jsonify({'error': 'No reviews found'}), 404
+        if cached_data is not None:
+            logger.info(f"Cache hit for reviews: {business_id}")
+            return jsonify(cached_data)
 
-    # Limit results
-    limit = request.args.get('limit', 50, type=int)
-    business_reviews = business_reviews.head(limit)
+        logger.info(f"Cache miss for reviews: {business_id}, fetching...")
 
-    return jsonify({
-        'reviews': business_reviews.to_dict('records'),
-        'count': len(business_reviews)
-    })
+        if reviews_df.empty:
+            return jsonify({'error': 'No review data available'}), 404
+
+        # Get reviews for this business
+        business_reviews = reviews_df[reviews_df['business_id'] == business_id]
+
+        if len(business_reviews) == 0:
+            return jsonify({'error': 'No reviews found for this business'}), 404
+
+        # Sort by date (most recent first) and get top N
+        business_reviews = business_reviews.sort_values('date', ascending=False).head(limit)
+
+        # Format reviews
+        reviews = []
+        for _, review in business_reviews.iterrows():
+            reviews.append({
+                'review_id': review.get('review_id', ''),
+                'rating': float(review.get('rating', review.get('stars', 0))),
+                'text': review.get('text', ''),
+                'date': str(review.get('date', '')),
+                'useful': int(review.get('useful', 0)),
+                'user_review_count': int(review.get('user_review_count', 0))
+            })
+
+        result = {
+            'business_id': business_id,
+            'reviews': reviews,
+            'count': len(reviews),
+            'total_reviews': len(reviews_df[reviews_df['business_id'] == business_id]),
+            'timestamp': pd.Timestamp.now().isoformat()
+        }
+
+        # Cache the result
+        set_in_cache(cache_key, result)
+
+        return jsonify(result)
+
+    except Exception as e:
+        logger.error(f"Error fetching reviews: {e}")
+        return jsonify({'error': str(e)}), 500
 
 
 @app.route('/api/business/<business_id>/stats', methods=['GET'])

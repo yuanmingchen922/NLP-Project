@@ -576,6 +576,89 @@ function toggleDishes(businessId) {
     section.style.display = 'none';
 }
 
+// 11. Load and show reviews
+async function loadAndShowReviews(businessId) {
+    const section = document.getElementById(`reviews-${businessId}`);
+    const loading = document.getElementById(`reviews-loading-${businessId}`);
+    const content = document.getElementById(`reviews-content-${businessId}`);
+
+    // Show section and loading spinner
+    section.style.display = 'block';
+    loading.style.display = 'block';
+    content.style.display = 'none';
+
+    try {
+        const response = await fetch(`/api/business/${businessId}/reviews?limit=10`);
+        const data = await response.json();
+
+        if (data.error) {
+            throw new Error(data.error);
+        }
+
+        // Hide loading, show content
+        loading.style.display = 'none';
+        content.style.display = 'block';
+
+        // Render reviews
+        if (data.reviews && data.reviews.length > 0) {
+            let html = `<div class="mb-2 text-muted small">Showing ${data.count} of ${data.total_reviews} reviews</div>`;
+            html += '<div class="list-group list-group-flush">';
+
+            data.reviews.forEach((review) => {
+                // Format date
+                const date = new Date(review.date);
+                const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
+                // Star rating
+                const stars = '★'.repeat(Math.floor(review.rating)) + '☆'.repeat(5 - Math.floor(review.rating));
+
+                // Truncate long reviews
+                const maxLength = 300;
+                let reviewText = review.text;
+                let showMoreLink = '';
+                if (reviewText.length > maxLength) {
+                    reviewText = reviewText.substring(0, maxLength) + '...';
+                    showMoreLink = '<a href="#" class="text-primary small">Read more</a>';
+                }
+
+                html += `
+                    <div class="list-group-item px-0 py-3">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <span class="text-warning">${stars}</span>
+                                <span class="text-muted small ms-2">${review.rating.toFixed(1)}</span>
+                            </div>
+                            <small class="text-muted">${formattedDate}</small>
+                        </div>
+                        <p class="mb-1" style="line-height: 1.6;">${reviewText}</p>
+                        ${showMoreLink}
+                        <div class="mt-2">
+                            <small class="text-muted">
+                                ${review.useful > 0 ? `${review.useful} found this useful` : ''}
+                            </small>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            content.innerHTML = html;
+        } else {
+            content.innerHTML = '<p class="text-muted small">No reviews found.</p>';
+        }
+
+    } catch (error) {
+        console.error('Error loading reviews:', error);
+        loading.innerHTML = `<p class="text-danger small">Error loading data: ${error.message}</p>`;
+    }
+}
+
+// 12. Toggle reviews section
+function toggleReviews(businessId) {
+    const section = document.getElementById(`reviews-${businessId}`);
+    section.style.display = 'none';
+}
+
 // Clean up charts on page unload to prevent memory leaks
 window.addEventListener('beforeunload', function() {
     for (const chartId in activeCharts) {
