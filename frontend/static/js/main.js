@@ -341,8 +341,8 @@ function renderAspectScoresList(businessId, data) {
         html += `
             <div class="mb-2">
                 <div class="d-flex justify-content-between align-items-center mb-1">
-                    <small class="fw-bold">${aspect.emoji} ${aspect.label}</small>
-                    <small class="text-muted">${aspect.average_rating.toFixed(1)} ⭐</small>
+                    <small class="fw-bold">${aspect.label}</small>
+                    <small class="text-muted">${aspect.average_rating.toFixed(1)}</small>
                 </div>
                 <div class="progress" style="height: 8px;">
                     <div class="progress-bar bg-${color}" role="progressbar"
@@ -481,7 +481,7 @@ function renderImprovementBadge(businessId, trends) {
                     <div class="text-end">
                         <small class="text-muted d-block">Total Change</small>
                         <strong class="${trends.total_change >= 0 ? 'text-success' : 'text-danger'}">
-                            ${trends.total_change >= 0 ? '+' : ''}${trends.total_change.toFixed(2)} ⭐
+                            ${trends.total_change >= 0 ? '+' : ''}${trends.total_change.toFixed(2)}
                         </strong>
                         <small class="text-muted d-block mt-2">
                             ${trends.first_period_rating.toFixed(1)} → ${trends.current_rating.toFixed(1)}
@@ -535,10 +535,10 @@ async function loadAndShowDishes(businessId) {
 
             data.dishes.forEach((dish, index) => {
                 const sentimentBadge = dish.sentiment === 'positive' ?
-                    '<span class="badge bg-success">👍 Positive</span>' :
+                    '<span class="badge bg-success">Positive</span>' :
                     dish.sentiment === 'negative' ?
-                    '<span class="badge bg-danger">👎 Negative</span>' :
-                    '<span class="badge bg-secondary">😐 Neutral</span>';
+                    '<span class="badge bg-danger">Negative</span>' :
+                    '<span class="badge bg-secondary">Neutral</span>';
 
                 html += `
                     <div class="list-group-item px-0">
@@ -547,7 +547,7 @@ async function loadAndShowDishes(businessId) {
                                 <h6 class="mb-1">${index + 1}. ${dish.name}</h6>
                                 <small class="text-muted">
                                     ${dish.mention_count} mention${dish.mention_count > 1 ? 's' : ''} •
-                                    ${dish.average_rating.toFixed(1)} ⭐ average
+                                    ${dish.average_rating.toFixed(1)} average
                                 </small>
                             </div>
                             <div>

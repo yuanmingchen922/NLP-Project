@@ -4,6 +4,7 @@ Includes: Named Entity Recognition, Keyword Extraction, Text Summarization
 """
 
 import spacy
+import pandas as pd
 import logging
 from collections import Counter
 from typing import List, Dict, Tuple
@@ -441,7 +442,6 @@ ENHANCED_ASPECT_KEYWORDS = {
             'ingredient', 'spice', 'season', 'seasoned', 'recipe', 'authentic',
             'homemade', 'gourmet', 'cuisine', 'menu', 'entree', 'appetizer'
         ],
-        'emoji': '🍽️',
         'label': 'Food Quality'
     },
     'service': {
@@ -451,7 +451,6 @@ ENHANCED_ASPECT_KEYWORDS = {
             'courteous', 'welcoming', 'greeting', 'prompt', 'quick',
             'manager', 'host', 'hostess', 'bartender', 'team'
         ],
-        'emoji': '👥',
         'label': 'Service'
     },
     'atmosphere': {
@@ -461,7 +460,6 @@ ENHANCED_ASPECT_KEYWORDS = {
             'music', 'lighting', 'noise', 'loud', 'quiet', 'cozy',
             'romantic', 'casual', 'formal', 'modern', 'rustic', 'elegant'
         ],
-        'emoji': '🏪',
         'label': 'Atmosphere'
     },
     'price_value': {
@@ -471,7 +469,6 @@ ENHANCED_ASPECT_KEYWORDS = {
             'budget', 'deal', 'special', 'discount', 'promotion',
             'dollar', 'pay', 'paid', 'charge', 'bill', 'tab'
         ],
-        'emoji': '💰',
         'label': 'Price/Value'
     },
     'cleanliness': {
@@ -481,7 +478,6 @@ ENHANCED_ASPECT_KEYWORDS = {
             'bathroom', 'restroom', 'table', 'floor', 'kitchen',
             'organized', 'maintained', 'well-kept'
         ],
-        'emoji': '✨',
         'label': 'Cleanliness'
     },
     'location_parking': {
@@ -491,7 +487,6 @@ ENHANCED_ASPECT_KEYWORDS = {
             'distance', 'walk', 'drive', 'find', 'spot', 'space',
             'valet', 'validated', 'free parking', 'paid parking'
         ],
-        'emoji': '📍',
         'label': 'Location/Parking'
     },
     'portion_size': {
@@ -501,7 +496,6 @@ ENHANCED_ASPECT_KEYWORDS = {
             'big', 'little', 'massive', 'enough', 'filling',
             'leftovers', 'share', 'sharing', 'hungry', 'full'
         ],
-        'emoji': '🍱',
         'label': 'Portion Size'
     },
     'wait_time': {
@@ -511,7 +505,6 @@ ENHANCED_ASPECT_KEYWORDS = {
             'reservation', 'line', 'queue', 'seated', 'table ready',
             'patient', 'impatient', 'prompt', 'speedy'
         ],
-        'emoji': '⏱️',
         'label': 'Wait Time'
     }
 }
@@ -748,8 +741,7 @@ class EnhancedSentimentAspectAnalyzer:
             results[aspect] = self.analyze_aspect_sentiment(
                 text, aspect, config['keywords']
             )
-            # Add emoji and label
-            results[aspect]['emoji'] = config['emoji']
+            # Add label
             results[aspect]['label'] = config['label']
 
         return results
@@ -825,7 +817,6 @@ def analyze_business_aspects(business_id: str, reviews_df) -> Dict[str, Dict]:
                 'sentiment_distribution': sentiment_dist,
                 'mention_count': data['mention_count'],
                 'coverage_percentage': round(coverage, 1),
-                'emoji': ENHANCED_ASPECT_KEYWORDS[aspect]['emoji'],
                 'label': ENHANCED_ASPECT_KEYWORDS[aspect]['label']
             }
         else:
@@ -836,7 +827,6 @@ def analyze_business_aspects(business_id: str, reviews_df) -> Dict[str, Dict]:
                 'sentiment_distribution': {'positive': 0, 'negative': 0, 'neutral': 0},
                 'mention_count': 0,
                 'coverage_percentage': 0,
-                'emoji': ENHANCED_ASPECT_KEYWORDS[aspect]['emoji'],
                 'label': ENHANCED_ASPECT_KEYWORDS[aspect]['label']
             }
 
