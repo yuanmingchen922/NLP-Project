@@ -6,44 +6,44 @@ A comprehensive Natural Language Processing system for analyzing Yelp business r
 ![Python](https://img.shields.io/badge/python-3.8+-green)
 ![License](https://img.shields.io/badge/license-Academic-orange)
 
-## 🚀 Features
+## Features
 
 ### Core NLP Features
-- ✅ **Sentiment Analysis** - Traditional ML and Deep Learning approaches
-- ✅ **Named Entity Recognition** - Extract people, locations, products
-- ✅ **Keyword Extraction** - TF-IDF + noun phrase extraction
-- ✅ **Text Summarization** - Extractive summarization
-- ✅ **Aspect-Based Sentiment** - Analyze 5 key aspects (food, service, atmosphere, price, cleanliness)
-- ✅ **Dish Extraction** - Multi-strategy menu item detection
-- ✅ **Review Quality Scoring** - 5-dimensional quality assessment
-- ✅ **Spam Detection** - Identify promotional/fake reviews
-- ✅ **Credibility Analysis** - Trust score calculation
-- ✅ **Business Analytics** - Trend analysis and improvement scoring
-- ✅ **Intelligent Search** - Advanced business search and filtering
+- **Sentiment Analysis** - Traditional ML and Deep Learning approaches
+- **Named Entity Recognition** - Extract people, locations, products
+- **Keyword Extraction** - TF-IDF + noun phrase extraction
+- **Text Summarization** - Extractive summarization
+- **Aspect-Based Sentiment** - Analyze 5 key aspects (food, service, atmosphere, price, cleanliness)
+- **Dish Extraction** - Multi-strategy menu item detection
+- **Review Quality Scoring** - 5-dimensional quality assessment
+- **Spam Detection** - Identify promotional/fake reviews
+- **Credibility Analysis** - Trust score calculation
+- **Business Analytics** - Trend analysis and improvement scoring
+- **Intelligent Search** - Advanced business search and filtering
 
 ### Technical Highlights
-- 🔥 **100K reviews** from Yelp Academic Dataset
-- 🎯 **85%+ accuracy** on sentiment classification
-- ⚡ **<100ms response** time with caching
-- 📊 **Real-time analytics** with interactive visualizations
-- 🌐 **RESTful API** with 30+ endpoints
-- 💾 **Smart caching** (1-hour TTL, 70%+ hit rate)
+- **100K reviews** from Yelp Academic Dataset
+- **85%+ accuracy** on sentiment classification
+- **<100ms response** time with caching
+- **Real-time analytics** with interactive visualizations
+- **RESTful API** with 30+ endpoints
+- **Smart caching** (1-hour TTL, 70%+ hit rate)
 
-## 📊 Demo
+## Demo
 
 ### Search Interface
 ```
 ┌────────────────────────────────────────────┐
-│  🔍 Search: "pizza restaurant"            │
+│  Search: "pizza restaurant"               │
 └────────────────────────────────────────────┘
      ↓
 ┌────────────────────────────────────────────┐
-│ Mario's Pizza ⭐ 4.5 (245 reviews)        │
+│ Mario's Pizza - 4.5 (245 reviews)         │
 │ 123 Main St, New York                      │
 │                                            │
 │ [View Reviews] [Popular Dishes]            │
 │                                            │
-│ 📍 View on Maps  🔗 Find Website          │
+│ View on Maps | Find Website               │
 └────────────────────────────────────────────┘
 ```
 
@@ -65,7 +65,7 @@ GET /api/business/abc123/dishes
   }
 ```
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### NLP & ML
 - **spaCy** - NER, POS tagging, noun chunks
@@ -88,7 +88,7 @@ GET /api/business/abc123/dishes
 - **OpenAI GPT-4o-mini** - AI-assisted dish extraction
 - **SerpAPI** - (Optional) Real-time data fetching
 
-## 📦 Installation
+## Installation
 
 ```bash
 # 1. Clone repository
@@ -110,7 +110,7 @@ cp .env.example .env
 # Edit .env with your OpenAI/SerpAPI keys
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # Start the server
@@ -126,7 +126,7 @@ The system will:
 3. Start Flask server on port 5001
 4. Enable caching for fast responses
 
-## 📖 Documentation
+## Documentation
 
 For detailed documentation, see **[NLP_FEATURES_DOCUMENTATION.md](NLP_FEATURES_DOCUMENTATION.md)**
 
@@ -138,27 +138,27 @@ For detailed documentation, see **[NLP_FEATURES_DOCUMENTATION.md](NLP_FEATURES_D
 - **Usage Guide** - Installation, training, and usage instructions
 - **Performance** - Optimization strategies and metrics
 
-## 🎯 Use Cases
+## Use Cases
 
 ### For Businesses
-- 📈 Monitor customer sentiment trends over time
-- 🍕 Identify most popular menu items
-- ⚠️ Detect quality issues early
-- 📊 Compare performance with competitors
+- Monitor customer sentiment trends over time
+- Identify most popular menu items
+- Detect quality issues early
+- Compare performance with competitors
 
 ### For Customers
-- 🔍 Search businesses by specific criteria
-- 📝 Read AI-generated review summaries
-- ⭐ See aspect-based ratings (food, service, etc.)
-- 🎯 Discover top-rated dishes
+- Search businesses by specific criteria
+- Read AI-generated review summaries
+- See aspect-based ratings (food, service, etc.)
+- Discover top-rated dishes
 
 ### For Researchers
-- 🧪 Experiment with NLP techniques
-- 📊 Analyze large-scale review datasets
-- 🤖 Train custom sentiment models
-- 📈 Study customer behavior patterns
+- Experiment with NLP techniques
+- Analyze large-scale review datasets
+- Train custom sentiment models
+- Study customer behavior patterns
 
-## 📊 Dataset
+## Dataset
 
 - **Source:** Yelp Academic Dataset
 - **Total Reviews:** 6.9M (100K sampled)
@@ -166,7 +166,7 @@ For detailed documentation, see **[NLP_FEATURES_DOCUMENTATION.md](NLP_FEATURES_D
 - **Categories:** Restaurants, shops, services
 - **Time Range:** Multiple years of historical data
 
-## 🎨 Screenshots
+## Screenshots
 
 ### Main Search Interface
 Clean, intuitive search with real-time results
@@ -185,7 +185,7 @@ Individual review analysis showing:
 - Key entities
 - Spam/credibility check
 
-## 🔬 Model Performance
+## Model Performance
 
 | Model | Accuracy | F1-Score | Inference Time |
 |-------|----------|----------|----------------|
@@ -194,7 +194,7 @@ Individual review analysis showing:
 | Quality Scoring | N/A | N/A | <100ms |
 | Spam Detection | ~82% | 0.80 | <40ms |
 
-## 🛣️ Roadmap
+## Roadmap
 
 ### Version 1.2 (Planned)
 - [ ] Redis persistent caching
@@ -210,7 +210,7 @@ Individual review analysis showing:
 - [ ] Aspect-based search
 - [ ] Advanced visualizations
 
-## 🤝 Contributing
+## Contributing
 
 Contributions welcome! Please:
 
@@ -220,11 +220,11 @@ Contributions welcome! Please:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📝 License
+## License
 
 This project is for academic purposes. Please cite the Yelp Academic Dataset if using this code.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **Yelp** - For providing the Academic Dataset
 - **spaCy** - Excellent NLP toolkit
@@ -232,15 +232,13 @@ This project is for academic purposes. Please cite the Yelp Academic Dataset if 
 - **Bootstrap** - UI components
 - **Chart.js** - Beautiful visualizations
 
-## 📧 Contact
+## Contact
 
 **Developer:** Mingchen Yuan
 **GitHub:** [@yuanmingchen922](https://github.com/yuanmingchen922)
 **Project Link:** [https://github.com/yuanmingchen922/NLP-Project](https://github.com/yuanmingchen922/NLP-Project)
 
 ---
-
-⭐ If you find this project useful, please give it a star!
 
 **Version:** 1.1.0
 **Last Updated:** December 2, 2025
