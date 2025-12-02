@@ -220,9 +220,6 @@ Contributions welcome! Please:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## License
-
-This project is for academic purposes. Please cite the Yelp Academic Dataset if using this code.
 
 ## Acknowledgments
 
